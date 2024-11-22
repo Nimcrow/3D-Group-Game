@@ -4,9 +4,9 @@
 # Name of Group Members: 
 - Justin Iwane
 - Abraham Al-Shamsie 
-- Bryle 
+- Bryle Ong 
 - Chris Dale Ebuen
-- Khoa 
+- Huu-Khoa Nguyen
 
 # Description of Current Target for the Game:
 - First-person multi-level minigame where there are four levels in which the user can experience different majors. Each major, is a different minigame. The goal of the game is to complete all the minigames to ultimately pick your major at the end. 
@@ -25,5 +25,5 @@
 ### Chris Dale Ebuen
 - Design a dynamic and engaging combat encounter with the "Art Major" enemy, emphasizing creative mechanics that challenge the player's mobility, vision, and strategy. Incorporate unique attacks and defensive tactics, such as screen impairments, stun effects, and environmental hazards, to create a distinctive boss fight experience. Develop thematic assets that reinforce the artistic theme, ensuring the enemy's abilities and visuals align with the environment and player's actions. 
 
-### Khoa 
--
+### Huu-Khoa Nguyen
+- Create a combat encounter with a "Buisness Major" enemy. The player will move around a large area trying to dodge an enemy that continuously charges at the player. If the enemy misses and hits a wall the enemy will be stunned for a short amount of time allowing the player to run up and attack the enemy. After a certain amount of HP is lost the enemy will enrage and start to charge more frequently at the player, while maybe shrugging off some of the stuns when hitting the wall. Once the enemy is defeated the level is complete. Will need to find assets mostly just for the enemy as the game is played from the first person perspective.

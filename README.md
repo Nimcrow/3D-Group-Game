@@ -23,7 +23,7 @@
 -
 
 ### Chris Dale Ebuen
-- 
+- Design a dynamic and engaging combat encounter with the "Art Major" enemy, emphasizing creative mechanics that challenge the player's mobility, vision, and strategy. Incorporate unique attacks and defensive tactics, such as screen impairments, stun effects, and environmental hazards, to create a distinctive boss fight experience. Develop thematic assets that reinforce the artistic theme, ensuring the enemy's abilities and visuals align with the environment and player's actions. 
 
 ### Khoa 
 -

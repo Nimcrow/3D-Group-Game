@@ -1,15 +1,15 @@
 # Name of Game: 
--
+- Undeclared Adventures
 
 # Name of Group Members: 
 - Justin Iwane
 - Abraham Al-Shamsie 
 - Bryle 
-- Chris 
+- Chris Dale Ebuen
 - Khoa 
 
 # Description of Current Target for the Game:
--
+- First-person multi-level minigame where there are four levels in which the user can experience different majors. Each major, is a different minigame. The goal of the game is to complete all the minigames to ultimately pick your major at the end. 
 
 # General Goals for Each Person:
 
@@ -22,8 +22,8 @@
 ### Bryle
 -
 
-### Chris 
--
+### Chris Dale Ebuen
+- 
 
 ### Khoa 
 -

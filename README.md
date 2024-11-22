@@ -9,7 +9,7 @@
 - Huu-Khoa Nguyen
 
 # Description of Current Target for the Game:
-- First-person multi-level minigame where there are four levels in which the user can experience different majors. Each major, is a different minigame. The goal of the game is to complete all the minigames to ultimately pick your major at the end. 
+- First-person multi-level minigame where there are four levels in which the user can experience different majors. Based on SDSU campus. The player can walk into buildings that correspond to an academic program. The goal of the game is to complete all the minigames to ultimately pick your major at the end.
 
 # General Goals for Each Person:
 
@@ -20,7 +20,7 @@
 -
 
 ### Bryle
--
+- Design an encounter with a Psychology Major. Single room design based on horror aspects: dim lighting, (looping environments?), slightly jarring classroom furniture. Psychology major boss has abilities to manipulate the environment, distort perception, and create hallucinations. Based on increasing difficulty with two/three boss phases. Sound-based attacks and cues.
 
 ### Chris Dale Ebuen
 - Design a dynamic and engaging combat encounter with the "Art Major" enemy, emphasizing creative mechanics that challenge the player's mobility, vision, and strategy. Incorporate unique attacks and defensive tactics, such as screen impairments, stun effects, and environmental hazards, to create a distinctive boss fight experience. Develop thematic assets that reinforce the artistic theme, ensuring the enemy's abilities and visuals align with the environment and player's actions. 

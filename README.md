@@ -19,7 +19,7 @@
 ### Abraham Al-Shamsie
 - Making the basic player movement where they can walk, run, crouch, jump, and slide. Animating and rigging player’s melee combat, including, punching, kicking, and slashing variations. Implement player’s interactions with objects, like picking up objects, opening doors, hiding in a certain spot, and throwing items. I’ll also try and build a way to transition between levels (scenes) and make a basic main scene to connect the different levels and, potentially, for the player to spawn at (We’re still discussing this part). Implement a basic player stamina, health, and level stats. Maybe if I figure it out in time I’ll try to implement a mini brawl level where the player can experience combat against different bosses from all the majors all at once. Like a huge royal rumble match where everybody is fighting each other in a small area.
 
-### Bryle
+### Bryle Ong
 - Design an encounter with a Psychology Major. Single room design based on horror aspects: dim lighting, (looping environments?), slightly jarring classroom furniture. Psychology major boss has abilities to manipulate the environment, distort perception, and create hallucinations. Based on increasing difficulty with two/three boss phases. Sound-based attacks and cues.
 
 ### Chris Dale Ebuen

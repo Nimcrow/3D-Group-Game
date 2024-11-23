@@ -22,7 +22,7 @@
 ### Bryle Ong
 - Design an encounter referencing SDSU's School of Theatre, Television, and Film. Design based on horror aspects: dim lighting, looping environments, jarring furniture. Single boss battle referencing famous horror film The Ring. Player is challenged find good hiding places and navigate the building to escape. Sound-based horror (boss hearing, attacks, and cues). Jumpscare death animation.
 
-### Chris Dale Ebuen
+### Christian Dale Ebuen
 - Design a dynamic and engaging combat encounter with the "Art Major" enemy, emphasizing creative mechanics that challenge the player's mobility, vision, and strategy. Incorporate unique attacks and defensive tactics, such as screen impairments, stun effects, and environmental hazards, to create a distinctive boss fight experience. Develop thematic assets that reinforce the artistic theme, ensuring the enemy's abilities and visuals align with the environment and player's actions. 
 
 ### Huu-Khoa Nguyen

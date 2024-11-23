@@ -5,7 +5,7 @@
 - Justin Iwane
 - Abraham Al-Shamsie 
 - Bryle Ong 
-- Chris Dale Ebuen
+- Christian Dale Ebuen
 - Huu-Khoa Nguyen
 
 # Description of Current Target for the Game:

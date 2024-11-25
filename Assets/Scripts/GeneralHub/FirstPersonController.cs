@@ -248,6 +248,21 @@ public class FirstPersonController : MonoBehaviour
 
         duringCrouchAnmation = false;
     }
+
+    // Returns the position of the character
+    private Vector3 GetCharacterPosition()
+    {
+        return characterController.transform.position;
+    }
+
+    // Checks for collisions with the player
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.CompareTag("Enemy"))
+        {
+            
+        }
+    }
 }
 
 

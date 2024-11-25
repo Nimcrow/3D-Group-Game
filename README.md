@@ -2,8 +2,8 @@
 - Undeclared Adventures
 
 # Name of Group Members: 
-- Justin Iwane
 - Abraham Al-Shamsie 
+- Justin Iwane
 - Bryle Ong 
 - Christian Dale Ebuen
 - Huu-Khoa Nguyen
@@ -13,11 +13,11 @@
 
 # General Goals for Each Person:
 
-### Justin Iwane
-- To create a scene revolving around engineering majors. The player will dodge traps and obstacles such as catapults and landmines to make it past the scene. I'll need to find assets for the catapult, landmines, and rocks being thrown from the catapult. The assets won't be anything too crazy, just ones taken from the internet.
-
 ### Abraham Al-Shamsie
 - Making the basic player movement where they can walk, run, crouch, jump, and slide. Animating and rigging player’s melee combat, including, punching, kicking, and slashing variations. Implement player’s interactions with objects, like picking up objects, opening doors, hiding in a certain spot, and throwing items. I’ll also try and build a way to transition between levels (scenes) and make a basic main scene to connect the different levels and, potentially, for the player to spawn at (We’re still discussing this part). Implement a basic player stamina, health, and level stats. Maybe if I figure it out in time I’ll try to implement a mini brawl level where the player can experience combat against different bosses from all the majors all at once. Like a huge royal rumble match where everybody is fighting each other in a small area.
+
+### Justin Iwane
+- To create a scene revolving around engineering majors. The player will dodge traps and obstacles such as catapults and landmines to make it past the scene. I'll need to find assets for the catapult, landmines, and rocks being thrown from the catapult. As for the game management system, I'll need to track when the user successfully makes it to the end of the obstacle course. I'll also need to track if they get hit with an object. If they make it to the end of the scene(indicated by reaching a platform), they advance to the next scene. If they collide with one of the targeting objects, they reset back to the starting point - A platform at the start of the scene. I'll also need to implement sound bytes: a meteor sound when a catapult is launched, a flying sound when the rock is in the air, an explosion sound when a landmine is triggered, and a blood splattering sound when the user gets hit with a rock. 
 
 ### Bryle Ong
 - Design an encounter with a Film Studies major. A minigame reflecting cinematic tropes and film techniques. The player is trapped in a living silent film. Visuals will be black and white film effect, movie props, and objects to dodge (tropes like a falling anvil, slipping on a banana peel, trapdoors). Text box system (following silent movie aesthetic). Film Studies major is the main villain, throwing cartoonish objects which the player has to dodge. Possible extensions to this minigame is moving onto another movie genre after surviving this challenge.

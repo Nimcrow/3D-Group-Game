@@ -682,11 +682,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 138545309}
   maxHealth: 20
-  chargeSpeed: 5
-  chargeCd: 3
+  chargeSpeed: 15
+  chargeCd: 1
   stunTime: 5
-  chargeDuration: 4
-  idleTimer: 3
+  chargeDuration: 1
+  idleTimer: 2
 --- !u!1 &1799025793
 GameObject:
   m_ObjectHideFlags: 0

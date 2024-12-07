@@ -250,7 +250,7 @@ public class FirstPersonController : MonoBehaviour
     }
 
     // Returns the position of the character
-    private Vector3 GetCharacterPosition()
+    public Vector3 GetCharacterPosition()
     {
         return characterController.transform.position;
     }

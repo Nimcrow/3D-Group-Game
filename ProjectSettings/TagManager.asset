@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Walls
+  - Interactable/Pickup
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - interactionLayer
+  - Enemy
   - 
   - 
   - 

@@ -6,6 +6,7 @@ public class PlayerShooting : MonoBehaviour
     public float shootForce = 20f; // Adjust the force applied to the ammo
     public float shootOffset = 1.5f; // Distance in front of the player to spawn the ammo
     public float verticalOffset = 1.0f; // Height offset for bullet spawning
+    public Camera playerCamera; // Reference to the player's camera
 
     void Update()
     {
@@ -17,20 +18,33 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot()
     {
-        // Calculate the spawn position in front of the player on the horizontal axis with a vertical offset
-        Vector3 shootPosition = transform.position 
-                                + new Vector3(transform.forward.x, 0, transform.forward.z).normalized * shootOffset 
-                                + new Vector3(0, verticalOffset, 0);
+        // Raycast to detect where the cursor is pointing in the world
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Vector3 targetPoint;
 
-        // Instantiate ammo at the calculated position with the player's rotation
+        if (Physics.Raycast(ray, out hit)) // If the ray hits something
+        {
+            targetPoint = hit.point;
+        }
+        else // Default to a point far away in the direction of the cursor
+        {
+            targetPoint = ray.GetPoint(100f); // 100 units away from the camera
+        }
+
+        // Calculate the direction from the player's position to the target point
+        Vector3 shootDirection = (targetPoint - transform.position).normalized;
+
+        // Adjust the spawn position for the ammo
+        Vector3 shootPosition = transform.position + shootDirection * shootOffset + new Vector3(0, verticalOffset, 0);
+
+        // Instantiate ammo at the calculated position
         GameObject ammoInstance = Instantiate(ammoPrefab, shootPosition, Quaternion.identity);
 
         // Apply force to the ammo's Rigidbody
         Rigidbody rb = ammoInstance.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Ensure the ammo moves forward on the horizontal plane
-            Vector3 shootDirection = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             rb.AddForce(shootDirection * shootForce, ForceMode.Impulse);
         }
     }

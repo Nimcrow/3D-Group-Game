@@ -17,7 +17,9 @@ public class EnemyAI : MonoBehaviour
     // Attacking
     public float timeBetweenAttacks = 1f;
     private bool alreadyAttacked;
-    public GameObject projectile;
+    public GameObject projectile; // Regular projectile
+    public GameObject specialProjectile; // Special projectile
+    private int attackCounter = 0; // Counter to track attacks
 
     // States
     public float sightRange = 10f, attackRange = 5f;
@@ -116,13 +118,19 @@ public class EnemyAI : MonoBehaviour
 
         if (!alreadyAttacked)
         {
-            // Attack logic
-            if (projectile != null)
+            attackCounter++;
+
+            // Determine which projectile to shoot
+            GameObject chosenProjectile = (attackCounter % 4 == 0) ? specialProjectile : projectile;
+
+            // Adjusted spawn position to shoot lower
+            Vector3 spawnPosition = transform.position + transform.forward * 1f + transform.up * 0.5f; // Lowered vertical offset
+
+            if (chosenProjectile != null)
             {
-                Vector3 spawnPosition = transform.position + transform.forward * 1f + transform.up * 1f; // Adjusted spawn position
-                Rigidbody rb = Instantiate(projectile, spawnPosition, Quaternion.identity).GetComponent<Rigidbody>();
+                Rigidbody rb = Instantiate(chosenProjectile, spawnPosition, Quaternion.identity).GetComponent<Rigidbody>();
                 rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+                rb.AddForce(transform.up * 4f, ForceMode.Impulse); // Reduced upward force for a lower trajectory
             }
 
             alreadyAttacked = true;
@@ -149,12 +157,21 @@ public class EnemyAI : MonoBehaviour
 
         if (currentHits >= maxHitsToActivateShield)
         {
+            Debug.Log("Shield activation triggered!");
             ActivateShield();
+        }
+        else
+        {
+            Debug.Log($"Shield not activated yet. Hits remaining: {maxHitsToActivateShield - currentHits}");
         }
 
         health -= damage;
 
-        if (health <= 0) Destroy(gameObject);
+        if (health <= 0)
+        {
+            Debug.Log("Enemy defeated!");
+            Destroy(gameObject);
+        }
     }
 
     private void ActivateShield()

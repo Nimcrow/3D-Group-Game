@@ -1,38 +1,39 @@
 using UnityEngine;
 
-public class AdaptiveEnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
-    // References
-    [SerializeField] private GameObject playerObject; // Player reference
-    private Transform player;
+    public GameObject playerObject; // Drag the player GameObject here in the Inspector
+    private Transform player;       // Reference to the player's Transform
 
-    // Layers
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask playerLayer;
+    public LayerMask whatIsGround, whatIsPlayer;
 
-    // Health
-    [SerializeField] private float health = 100f;
+    public float health = 100;
 
-    // Patroling
-    [Header("Patrol Settings")]
-    [SerializeField] private float patrolRadius = 10f;
-    [SerializeField] private float patrolSpeed = 2f;
-    private Vector3 patrolTarget;
-    private bool patrolTargetSet;
+    // Patrolling
+    public Vector3 walkPoint;
+    private bool walkPointSet;
+    public float walkPointRange;
 
-    // Combat
-    [Header("Combat Settings")]
-    [SerializeField] private float attackIntervalMin = 1.5f;
-    [SerializeField] private float attackIntervalMax = 3.5f;
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float projectileSpeed = 20f;
+    // Attacking
+    public float timeBetweenAttacks = 1f;
     private bool alreadyAttacked;
+    public GameObject projectile;
 
-    // Detection
-    [Header("Detection Settings")]
-    [SerializeField] private float detectionRange = 15f;
-    [SerializeField] private float attackRange = 5f;
+    // States
+    public float sightRange = 10f, attackRange = 5f;
     private bool playerInSightRange, playerInAttackRange;
+
+    // Movement
+    public float walkSpeed = 2f;
+    public float chaseSpeed = 4f; // Speed for chasing
+
+    // Shield
+    public GameObject shield; // Reference to the shield GameObject
+    public int maxHitsToActivateShield = 4;
+    private int currentHits = 0;
+    private bool isShieldActive = false;
+    private MeshRenderer shieldRenderer;
+    private SphereCollider shieldCollider;
 
     private void Awake()
     {
@@ -41,94 +42,92 @@ public class AdaptiveEnemyAI : MonoBehaviour
             player = playerObject.transform;
         }
 
-        Debug.Log("Enemy AI initialized and ready.");
-        ScheduleRandomShoot();
+        // Ensure the shield is deactivated at the start
+        if (shield != null)
+        {
+            shieldRenderer = shield.GetComponent<MeshRenderer>();
+            shieldCollider = shield.GetComponent<SphereCollider>();
+
+            if (shieldRenderer != null) shieldRenderer.enabled = false;
+            if (shieldCollider != null) shieldCollider.enabled = false;
+        }
     }
 
     private void Update()
     {
         if (player == null)
-        {
-            Patrol();
             return;
+
+        // Check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+        if (!playerInSightRange && !playerInAttackRange) Patroling(); // Patrol when no player is detected
+        if (playerInSightRange && !playerInAttackRange) ChasePlayer(); // Chase when player is detected but out of attack range
+        if (playerInAttackRange && playerInSightRange) AttackPlayer(); // Attack when in attack range
+
+        // Test Shield Activation with "E" Key
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E key pressed, registering as hit.");
+            TakeDamage(0); // Simulates a hit without reducing health
         }
-
-        CheckPlayerState();
-
-        if (!playerInSightRange && !playerInAttackRange)
-            Patrol();
-        else if (playerInSightRange && !playerInAttackRange)
-            ChasePlayer();
-        else if (playerInAttackRange && playerInSightRange)
-            AttackPlayer();
     }
 
-    private void CheckPlayerState()
+    private void Patroling()
     {
-        playerInSightRange = Physics.CheckSphere(transform.position, detectionRange, playerLayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+        {
+            Vector3 direction = (walkPoint - transform.position).normalized;
+            transform.Translate(direction * walkSpeed * Time.deltaTime, Space.World);
+
+            Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+            // Walk point reached
+            if (distanceToWalkPoint.magnitude < 1f)
+                walkPointSet = false;
+        }
     }
 
-    private void Patrol()
+    private void SearchWalkPoint()
     {
-        if (!patrolTargetSet)
-            SetRandomPatrolTarget();
+        // Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
 
-        transform.position = Vector3.MoveTowards(transform.position, patrolTarget, patrolSpeed * Time.deltaTime);
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if (Vector3.Distance(transform.position, patrolTarget) < 1f)
-            patrolTargetSet = false;
-    }
-
-    private void SetRandomPatrolTarget()
-    {
-        float randomX = Random.Range(-patrolRadius, patrolRadius);
-        float randomZ = Random.Range(-patrolRadius, patrolRadius);
-        patrolTarget = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-        if (Physics.Raycast(patrolTarget, Vector3.down, 2f, groundLayer))
-            patrolTargetSet = true;
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+            walkPointSet = true;
     }
 
     private void ChasePlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
-        transform.Translate(direction * patrolSpeed * Time.deltaTime, Space.World);
+        transform.Translate(direction * chaseSpeed * Time.deltaTime, Space.World);
     }
 
     private void AttackPlayer()
     {
+        // Look at the player
         transform.LookAt(player);
 
         if (!alreadyAttacked)
         {
-            ShootProjectile(player.position);
+            // Attack logic
+            if (projectile != null)
+            {
+                Vector3 spawnPosition = transform.position + transform.forward * 1f + transform.up * 1f; // Adjusted spawn position
+                Rigidbody rb = Instantiate(projectile, spawnPosition, Quaternion.identity).GetComponent<Rigidbody>();
+                rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+                rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            }
+
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), Random.Range(attackIntervalMin, attackIntervalMax));
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-    }
-
-    private void ShootProjectile(Vector3 targetPosition)
-    {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position + transform.forward * 1.5f, Quaternion.identity);
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.velocity = (targetPosition - transform.position).normalized * projectileSpeed;
-    }
-
-    private void ScheduleRandomShoot()
-    {
-        float randomInterval = Random.Range(attackIntervalMin, attackIntervalMax);
-        Invoke(nameof(ShootRandomProjectile), randomInterval);
-    }
-
-    private void ShootRandomProjectile()
-    {
-        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(0.2f, 1f), Random.Range(-1f, 1f)).normalized;
-        GameObject projectile = Instantiate(projectilePrefab, transform.position + randomDirection * 1.5f, Quaternion.identity);
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.velocity = randomDirection * projectileSpeed;
-
-        ScheduleRandomShoot();
     }
 
     private void ResetAttack()
@@ -136,23 +135,57 @@ public class AdaptiveEnemyAI : MonoBehaviour
         alreadyAttacked = false;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
+        if (isShieldActive)
+        {
+            Debug.Log("Attack blocked by shield!");
+            DeactivateShield();
+            return;
+        }
+
+        currentHits++;
+        Debug.Log($"Enemy hit! Current hits: {currentHits}/{maxHitsToActivateShield}");
+
+        if (currentHits >= maxHitsToActivateShield)
+        {
+            ActivateShield();
+        }
+
         health -= damage;
-        if (health <= 0)
-            Die();
+
+        if (health <= 0) Destroy(gameObject);
     }
 
-    private void Die()
+    private void ActivateShield()
     {
-        Destroy(gameObject);
+        if (shieldRenderer != null) shieldRenderer.enabled = true; // Enable shield visibility
+        if (shieldCollider != null) shieldCollider.enabled = true; // Enable shield functionality
+
+        isShieldActive = true;
+        Debug.Log("Shield activated!");
+
+        if (!shieldRenderer.enabled)
+        {
+            Debug.LogError("Shield renderer failed to activate! Check the object settings.");
+        }
+    }
+
+    private void DeactivateShield()
+    {
+        if (shieldRenderer != null) shieldRenderer.enabled = false; // Disable shield visibility
+        if (shieldCollider != null) shieldCollider.enabled = false; // Disable shield functionality
+
+        isShieldActive = false;
+        currentHits = 0; // Reset hits for reactivation
+        Debug.Log("Shield deactivated!");
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }

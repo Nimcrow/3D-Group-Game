@@ -4,6 +4,7 @@ public class EnemyAI : MonoBehaviour
 {
     public GameObject playerObject; // Drag the player GameObject here in the Inspector
     private Transform player;       // Reference to the player's Transform
+    private Animator animator;      // Reference to the Animator component
 
     public LayerMask whatIsGround, whatIsPlayer;
 
@@ -24,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     // States
     public float sightRange = 10f, attackRange = 5f;
     private bool playerInSightRange, playerInAttackRange;
+    private bool running; // Determines if the enemy is running
 
     // Movement
     public float walkSpeed = 2f;
@@ -43,6 +45,8 @@ public class EnemyAI : MonoBehaviour
         {
             player = playerObject.transform;
         }
+
+        animator = GetComponent<Animator>(); // Get the Animator component
 
         // Ensure the shield is deactivated at the start
         if (shield != null)
@@ -65,8 +69,22 @@ public class EnemyAI : MonoBehaviour
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
         if (!playerInSightRange && !playerInAttackRange) Patroling(); // Patrol when no player is detected
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer(); // Chase when player is detected but out of attack range
-        if (playerInAttackRange && playerInSightRange) AttackPlayer(); // Attack when in attack range
+        if (playerInSightRange && !playerInAttackRange)
+        {
+            running = true;
+            ChasePlayer(); // Chase when player is detected but out of attack range
+        }
+        if (playerInAttackRange && playerInSightRange)
+        {
+            running = false;
+            AttackPlayer(); // Attack when in attack range
+        }
+
+        // Update the running animation state
+        if (animator != null)
+        {
+            animator.SetBool("Running", running);
+        }
 
         // Test Shield Activation with "E" Key
         if (Input.GetKeyDown(KeyCode.E))
@@ -78,6 +96,8 @@ public class EnemyAI : MonoBehaviour
 
     private void Patroling()
     {
+        running = false; // Not running during patrolling
+
         if (!walkPointSet) SearchWalkPoint();
 
         if (walkPointSet)

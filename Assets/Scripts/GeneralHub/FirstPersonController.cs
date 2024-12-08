@@ -594,6 +594,15 @@ public class FirstPersonController : MonoBehaviour
             
         }
     }
+
+    //  Check for collision with rocks
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Rock"))
+        {
+            Debug.Log("Rock and Person Collided");
+        }
+    }
 }
 
 

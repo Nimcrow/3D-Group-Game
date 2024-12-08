@@ -265,6 +265,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.267
       objectReference: {fileID: 0}
+    - target: {fileID: 7907754500097475868, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
+      propertyPath: is_Enemy
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907754500097475868, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
+      propertyPath: is_Player
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8994621995709668326, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -255,6 +255,17 @@ public class FirstPersonController : MonoBehaviour
         return characterController.transform.position;
     }
 
+    public void SetCharacterSpeed(float newWalkSpeed, float newSprintSpeed)
+    {
+        walkSpeed = newWalkSpeed;
+        sprintSpeed = newSprintSpeed;
+    }
+
+    public void SetJumpHeight(float newJumpHeight)
+    {
+        jumpForce = newJumpHeight;
+    }
+
     // Checks for collisions with the player
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {

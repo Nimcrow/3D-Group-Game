@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cae4ed343bd1c2941a270aecf902fe60
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - power1: {instanceID: 0}
+  - power2: {instanceID: 0}
+  - power3: {instanceID: 0}
+  - playerController: {fileID: 8217605491376690859, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
+  - bossController: {fileID: 7545391904162911466, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

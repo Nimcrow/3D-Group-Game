@@ -555,6 +555,22 @@ public class FirstPersonController : MonoBehaviour
         playerCamera.fieldOfView = targetFOV;
         zoomRoutine = null;
     }
+    // Returns the position of the character
+    public Vector3 GetCharacterPosition()
+    {
+        float targetFOV = isEnter ? zoomFOV : defaultFOV;
+        float startingFOV = playerCamera.fieldOfView;
+        float timeElapsed = 0;
+
+        while (timeElapsed < timeToZoom)
+        {
+            playerCamera.fieldOfView = Mathf.Lerp(startingFOV, targetFOV, timeElapsed / timeToZoom);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        playerCamera.fieldOfView = targetFOV;
+        zoomRoutine = null;
+    }
 }
 
 

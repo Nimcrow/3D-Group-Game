@@ -6,7 +6,11 @@ TagManager:
   tags:
   - Enemy
   - Walls
+<<<<<<< HEAD
+  - Interactable/Pickup
+=======
   - Destructible Walls
+>>>>>>> d7dced06bf9dcaac608f05b9f00d0c850e4c5ce4
   layers:
   - Default
   - TransparentFX
@@ -14,8 +18,8 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
+  - interactionLayer
+  - Enemy
   - 
   - 
   - 

@@ -263,7 +263,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 1ee46d92725d63b43818cfc357eecf86, type: 2}
+  m_Motion: {fileID: 7400000, guid: c310ebda86ffa514790e0d25d44e1bdc, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -290,7 +290,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b199eabc8ef6e8b468045926840eda26, type: 2}
+  m_Motion: {fileID: 7400000, guid: cf8ceea46621b144886f5260765dc325, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -523,7 +523,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 66015e98487b2804aae2c4f03e1878dd, type: 2}
+  m_Motion: {fileID: 7400000, guid: 10151e0763fc30a41b54862218ba6658, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -610,7 +610,7 @@ BlendTree:
   m_Name: Grounded Movement
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 994d724cee6988940b9272d27c72b5b4, type: 2}
+    m_Motion: {fileID: 7400000, guid: 52bffb60cda25ae46bab5009f8daca8c, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1

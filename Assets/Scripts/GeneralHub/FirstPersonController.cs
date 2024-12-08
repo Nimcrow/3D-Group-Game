@@ -50,7 +50,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode crouchKey = KeyCode.LeftControl;
-    [SerializeField] private KeyCode zoomkey = KeyCode.Mouse1;
+    [SerializeField] private KeyCode zoomkey = KeyCode.Mouse2;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     // Setting up player's jumping
@@ -61,7 +61,7 @@ public class FirstPersonController : MonoBehaviour
     // Setting up a crouching mechanic
     [Header("Crouch Parameters")]
     [SerializeField] private float crouchHeight = 0.5f; // Crouch Height
-    [SerializeField] private float standingHeight = 1.0f; // Stand Height
+    [SerializeField] private float standingHeight = 2.0f; // Stand Height
     [SerializeField] private float timeToCrouch = 0.25f; // How long it takes to crouch and stand
     [SerializeField] private Vector3 crouchingCenter = new Vector3(0, 0.5f, 0); // center of the character when they're crouching
     [SerializeField] private Vector3 standingCenter = new Vector3(0, 0, 0); // center of the character when they're standing
@@ -510,7 +510,7 @@ public class FirstPersonController : MonoBehaviour
         //if (IsCrouching && Input.GetKeyDown(crouchKey) == true)
         //{
         //    //playerAnimation.Crouching(true);
-            //playerModel.transform.position = new Vector3(characterController.transform.position.x, characterController.transform.position.y + 0.48f, characterController.transform.position.z);
+        //playerModel.transform.position = new Vector3(characterController.transform.position.x, characterController.transform.position.y + 0.48f, characterController.transform.position.z);
         //}
         float timeElapsed = 0;
         float targetHeight = isCrouching ? standingHeight : crouchHeight;
@@ -536,7 +536,7 @@ public class FirstPersonController : MonoBehaviour
         //if ((isCrouching == false && duringCrouchAnmation == false) && Input.GetKeyDown(crouchKey) == false)
         //{
         //    //playerAnimation.Crouching(false);
-              //playerModel.transform.position = new Vector3(characterController.transform.position.x, characterController.transform.position.y - 0.48f, characterController.transform.position.z);
+        //playerModel.transform.position = new Vector3(characterController.transform.position.x, characterController.transform.position.y - 0.48f, characterController.transform.position.z);
         //}
     }
 
@@ -555,22 +555,27 @@ public class FirstPersonController : MonoBehaviour
         playerCamera.fieldOfView = targetFOV;
         zoomRoutine = null;
     }
-    // Returns the position of the character
+    //    // Returns the position of the character
+    //    public Vector3 GetCharacterPosition()
+    //    {
+    //        float targetFOV = isEnter ? zoomFOV : defaultFOV;
+    //        float startingFOV = playerCamera.fieldOfView;
+    //        float timeElapsed = 0;
+
+    //        while (timeElapsed < timeToZoom)
+    //        {
+    //            playerCamera.fieldOfView = Mathf.Lerp(startingFOV, targetFOV, timeElapsed / timeToZoom);
+    //            timeElapsed += Time.deltaTime;
+    //            yield return null;
+    //        }
+    //        playerCamera.fieldOfView = targetFOV;
+    //        zoomRoutine = null;
+    //    }
     public Vector3 GetCharacterPosition()
     {
-        float targetFOV = isEnter ? zoomFOV : defaultFOV;
-        float startingFOV = playerCamera.fieldOfView;
-        float timeElapsed = 0;
-
-        while (timeElapsed < timeToZoom)
-        {
-            playerCamera.fieldOfView = Mathf.Lerp(startingFOV, targetFOV, timeElapsed / timeToZoom);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-        playerCamera.fieldOfView = targetFOV;
-        zoomRoutine = null;
+        return characterController.transform.position;
     }
+
 }
 
 

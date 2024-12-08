@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SportsBoss : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class SportsBoss : MonoBehaviour
     private float timer; // Game timer
     private FirstPersonController playerController;
     private Renderer bossRenderer;
+    private bool isEnraged;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,7 @@ public class SportsBoss : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         isVulnerable = false;
         health = maxHealth;
+        isEnraged = false;
         bossState = "Cooldown";
     }
 
@@ -59,16 +62,11 @@ public class SportsBoss : MonoBehaviour
         }
 
         // Checks for game over
-        if (playerHP == 0)
+        if (playerHP == 0 || health == 0)
         {
-            // End the game
+            SceneManager.LoadScene("SportRoom");
         }
 
-        // Checks hp for the enrage mechanic
-        if (health <= (maxHealth / 4))
-        {
-            Enrage();
-        }
     }
 
     // The boss is stunned allowing the player to attack it
@@ -78,6 +76,7 @@ public class SportsBoss : MonoBehaviour
         bossRenderer.material = bossStunned;
         isVulnerable = true;
         timer += Time.deltaTime;
+
         if (timer >= stunTime)
         {
             timer = 0f;
@@ -107,7 +106,15 @@ public class SportsBoss : MonoBehaviour
     void Cooldown()
     {
         Debug.Log("Boss is on cooldown");
-        bossRenderer.material = bossNormal;
+        if(isEnraged == false)
+        {
+            bossRenderer.material = bossNormal;
+        }
+        else if (isEnraged == true)
+        {
+            bossRenderer.material = bossEnraged;
+        }
+        
         timer += Time.deltaTime;
 
         if (timer >= chargeCd)
@@ -121,7 +128,10 @@ public class SportsBoss : MonoBehaviour
     // Implement later, at 50 or 25 % hp the boss enrages and all of his cooldown timers get shorter making the boss fight harder
     void Enrage()
     {
-        bossRenderer.material = bossEnraged;
+
+        isEnraged = true;
+        chargeSpeed += 5;
+        chargeCd -= 0.5f;
     }
 
     private void OnTriggerEnter(Collider coll)
@@ -129,9 +139,21 @@ public class SportsBoss : MonoBehaviour
         if (bossState == "Charging")
         {
 
-            if (coll.gameObject.CompareTag("Walls"))
+            if (coll.gameObject.CompareTag("Walls") || coll.gameObject.CompareTag("Destructible Walls"))
             {
                 Debug.Log("Boss Hit a Wall");
+                health--;
+                if(coll.gameObject.CompareTag("Destructible Walls"))
+                {
+                    Destroy(coll.gameObject);
+                }
+
+                // Checks hp for the enrage mechanic
+                if (health <= (maxHealth / 4))
+                {
+                    Enrage();
+                }
+
                 timer = 0f;
                 rigidBody.velocity = Vector3.zero;
                 chargeDir = (playerController.GetCharacterPosition() + (playerController.GetCharacterPosition() - this.transform.position));

@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000976341112323646, guid: de3dc5c431bc0194e862b559e3c9a218, type: 3}
       propertyPath: m_Type
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4000976341112323646, guid: de3dc5c431bc0194e862b559e3c9a218, type: 3}
       propertyPath: m_Range
@@ -1907,8 +1907,12 @@ PrefabInstance:
       value: SportsBoss
       objectReference: {fileID: 0}
     - target: {fileID: 7545391904162911466, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
+      propertyPath: EndGame
+      value: 
+      objectReference: {fileID: 8148113705712375627, guid: c1ef2166d9e295b49b926c885d7e7047, type: 3}
+    - target: {fileID: 7545391904162911466, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
       propertyPath: maxHealth
-      value: 20
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7545391904162911466, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
       propertyPath: chargeSpeed

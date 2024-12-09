@@ -34,6 +34,9 @@ public class EnemyAI : MonoBehaviour
     private MeshRenderer shieldRenderer;
     private SphereCollider shieldCollider;
 
+    // Player collision damage
+    [SerializeField] private int collisionDamage = 10; // Damage dealt to the player on collision
+
     private void Awake()
     {
         if (playerObject != null)
@@ -63,19 +66,20 @@ public class EnemyAI : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (playerInSightRange && !playerInAttackRange)
+        if (playerInSightRange)
         {
-            ChasePlayer(); // Chase when player is detected but out of attack range
+            ChasePlayer(); // Always chase when player is detected
         }
-        if (playerInAttackRange && playerInSightRange)
+
+        if (playerInAttackRange)
         {
             AttackPlayer(); // Attack when in attack range
         }
 
-        // Update the running animation state
+        // Update running animation state (run while chasing or attacking)
         if (animator != null)
         {
-            animator.SetBool("running", playerInSightRange && !playerInAttackRange); // Use the correct lowercase parameter name
+            animator.SetBool("isRunning", playerInSightRange);
         }
     }
 
@@ -114,7 +118,7 @@ public class EnemyAI : MonoBehaviour
                     SpecialProjectile special = projectileInstance.GetComponent<SpecialProjectile>();
                     if (special != null)
                     {
-                        special.AssignPlayer(playerObject); // Assign the player to the special projectile
+                        special.AssignPlayer(playerObject);
                     }
                 }
             }
@@ -179,5 +183,18 @@ public class EnemyAI : MonoBehaviour
 
         isShieldActive = false;
         currentHits = 0;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject == playerObject)
+        {
+            // Assuming the player has a script with a TakeDamage method
+            var playerHealth = playerObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(collisionDamage);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Health Settings")]
     public int maxHealth = 100; // Maximum health
     private int currentHealth;
+    private bool isInvincible = false; // Flag for invincibility
 
     [Header("Respawn Settings")]
     public RespawnSystem respawnSystem; // Reference to the RespawnSystem
@@ -27,6 +28,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isInvincible)
+        {
+            Debug.Log("Player is invincible! Damage ignored.");
+            return; // Ignore damage during invincibility
+        }
+
         if (damage <= 0) return; // Ignore non-positive damage values
 
         currentHealth -= damage;
@@ -67,5 +74,24 @@ public class PlayerHealth : MonoBehaviour
             currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
             Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
         }
+    }
+
+    // Invincibility logic
+    public void StartInvincibility(float duration)
+    {
+        if (isInvincible) return; // Don't restart invincibility if already active
+        StartCoroutine(InvincibilityCoroutine(duration));
+    }
+
+    private System.Collections.IEnumerator InvincibilityCoroutine(float duration)
+    {
+        isInvincible = true;
+        Debug.Log("Player is now invincible!");
+
+        // Optional: Add visual feedback for invincibility (e.g., flashing effect)
+        yield return new WaitForSeconds(duration);
+
+        isInvincible = false;
+        Debug.Log("Player is no longer invincible!");
     }
 }

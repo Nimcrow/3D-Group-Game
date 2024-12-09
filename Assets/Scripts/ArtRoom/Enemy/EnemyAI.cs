@@ -3,32 +3,27 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     public GameObject playerObject; // Drag the player GameObject here in the Inspector
+    public GameObject finishPoint; // Reference to the FinishPoint GameObject
     private Transform player;       // Reference to the player's Transform
     private Animator animator;      // Reference to the Animator component
 
-    public LayerMask whatIsGround, whatIsPlayer;
+    public LayerMask whatIsPlayer;
 
     public float health = 100;
-
-    // Patrolling
-    public Vector3 walkPoint;
-    private bool walkPointSet;
-    public float walkPointRange;
 
     // Attacking
     public float timeBetweenAttacks = 1f;
     private bool alreadyAttacked;
     public GameObject projectile; // Regular projectile
     public GameObject specialProjectile; // Special projectile
+    public float verticalOffset = 1f; // Vertical offset for projectile spawn position
     private int attackCounter = 0; // Counter to track attacks
 
     // States
     public float sightRange = 10f, attackRange = 5f;
     private bool playerInSightRange, playerInAttackRange;
-    private bool running; // Determines if the enemy is running
 
     // Movement
-    public float walkSpeed = 2f;
     public float chaseSpeed = 4f; // Speed for chasing
 
     // Shield
@@ -68,61 +63,20 @@ public class EnemyAI : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling(); // Patrol when no player is detected
         if (playerInSightRange && !playerInAttackRange)
         {
-            running = true;
             ChasePlayer(); // Chase when player is detected but out of attack range
         }
         if (playerInAttackRange && playerInSightRange)
         {
-            running = false;
             AttackPlayer(); // Attack when in attack range
         }
 
         // Update the running animation state
         if (animator != null)
         {
-            animator.SetBool("Running", running);
+            animator.SetBool("running", playerInSightRange && !playerInAttackRange); // Use the correct lowercase parameter name
         }
-
-        // Test Shield Activation with "E" Key
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E key pressed, registering as hit.");
-            TakeDamage(0); // Simulates a hit without reducing health
-        }
-    }
-
-    private void Patroling()
-    {
-        running = false; // Not running during patrolling
-
-        if (!walkPointSet) SearchWalkPoint();
-
-        if (walkPointSet)
-        {
-            Vector3 direction = (walkPoint - transform.position).normalized;
-            transform.Translate(direction * walkSpeed * Time.deltaTime, Space.World);
-
-            Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
-            // Walk point reached
-            if (distanceToWalkPoint.magnitude < 1f)
-                walkPointSet = false;
-        }
-    }
-
-    private void SearchWalkPoint()
-    {
-        // Calculate random point in range
-        float randomZ = Random.Range(-walkPointRange, walkPointRange);
-        float randomX = Random.Range(-walkPointRange, walkPointRange);
-
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
     }
 
     private void ChasePlayer()
@@ -143,14 +97,26 @@ public class EnemyAI : MonoBehaviour
             // Determine which projectile to shoot
             GameObject chosenProjectile = (attackCounter % 4 == 0) ? specialProjectile : projectile;
 
-            // Adjusted spawn position to shoot lower
-            Vector3 spawnPosition = transform.position + transform.forward * 1f + transform.up * 0.5f; // Lowered vertical offset
-
             if (chosenProjectile != null)
             {
-                Rigidbody rb = Instantiate(chosenProjectile, spawnPosition, Quaternion.identity).GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 4f, ForceMode.Impulse); // Reduced upward force for a lower trajectory
+                Vector3 spawnPosition = transform.position + transform.forward + Vector3.up * verticalOffset;
+                GameObject projectileInstance = Instantiate(chosenProjectile, spawnPosition, Quaternion.identity);
+
+                Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+                }
+
+                // Assign "splat trigger" logic if special projectile
+                if (attackCounter % 4 == 0)
+                {
+                    SpecialProjectile special = projectileInstance.GetComponent<SpecialProjectile>();
+                    if (special != null)
+                    {
+                        special.AssignPlayer(playerObject); // Assign the player to the special projectile
+                    }
+                }
             }
 
             alreadyAttacked = true;
@@ -173,16 +139,9 @@ public class EnemyAI : MonoBehaviour
         }
 
         currentHits++;
-        Debug.Log($"Enemy hit! Current hits: {currentHits}/{maxHitsToActivateShield}");
-
         if (currentHits >= maxHitsToActivateShield)
         {
-            Debug.Log("Shield activation triggered!");
             ActivateShield();
-        }
-        else
-        {
-            Debug.Log($"Shield not activated yet. Hits remaining: {maxHitsToActivateShield - currentHits}");
         }
 
         health -= damage;
@@ -190,39 +149,35 @@ public class EnemyAI : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Enemy defeated!");
+
+            // Activate the finish point when the enemy is defeated
+            if (finishPoint != null)
+            {
+                FinishPoint finishPointScript = finishPoint.GetComponent<FinishPoint>();
+                if (finishPointScript != null)
+                {
+                    finishPointScript.ActivateFinishPoint();
+                }
+            }
+
             Destroy(gameObject);
         }
     }
 
     private void ActivateShield()
     {
-        if (shieldRenderer != null) shieldRenderer.enabled = true; // Enable shield visibility
-        if (shieldCollider != null) shieldCollider.enabled = true; // Enable shield functionality
+        if (shieldRenderer != null) shieldRenderer.enabled = true;
+        if (shieldCollider != null) shieldCollider.enabled = true;
 
         isShieldActive = true;
-        Debug.Log("Shield activated!");
-
-        if (!shieldRenderer.enabled)
-        {
-            Debug.LogError("Shield renderer failed to activate! Check the object settings.");
-        }
     }
 
     private void DeactivateShield()
     {
-        if (shieldRenderer != null) shieldRenderer.enabled = false; // Disable shield visibility
-        if (shieldCollider != null) shieldCollider.enabled = false; // Disable shield functionality
+        if (shieldRenderer != null) shieldRenderer.enabled = false;
+        if (shieldCollider != null) shieldCollider.enabled = false;
 
         isShieldActive = false;
-        currentHits = 0; // Reset hits for reactivation
-        Debug.Log("Shield deactivated!");
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightRange);
+        currentHits = 0;
     }
 }

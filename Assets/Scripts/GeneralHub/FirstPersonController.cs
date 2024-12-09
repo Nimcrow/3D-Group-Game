@@ -51,7 +51,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode crouchKey = KeyCode.LeftControl;
     [SerializeField] private KeyCode zoomkey = KeyCode.Mouse2;
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] public KeyCode interactKey = KeyCode.E;
 
     // Setting up player's jumping
     [Header("Jumping Parameters")]

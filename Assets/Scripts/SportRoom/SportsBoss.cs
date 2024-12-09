@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SportsBoss : MonoBehaviour
 {
     // Player variables for simplicity
+    public GameObject EndGame;
     public FirstPersonController playerController; // Reference to the player controller
     public int playerMaxHP;
 
@@ -62,7 +63,8 @@ public class SportsBoss : MonoBehaviour
         // Checks for game over
         if (playerHP == 0 || health == 0)
         {
-            SceneManager.LoadScene("SportRoom");
+            Instantiate<GameObject>(EndGame);
+            Destroy(this.gameObject);
         }
 
     }

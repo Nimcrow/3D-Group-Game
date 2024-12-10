@@ -614,6 +614,7 @@ MonoBehaviour:
   shootOffset: 1.5
   verticalOffset: 1
   playerCamera: {fileID: 1435496152}
+  shootSound: {fileID: 8300000, guid: e51f07d36ef3ebb4a8c34ea248de4df9, type: 3}
 --- !u!114 &343937537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1576,6 +1577,8 @@ MonoBehaviour:
   enragedDuration: 4
   shield: {fileID: 1128141689}
   collisionDamage: 100
+  enrageSound: {fileID: 0}
+  attackSound: {fileID: 0}
 --- !u!65 &1052950716
 BoxCollider:
   m_ObjectHideFlags: 0

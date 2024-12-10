@@ -11,30 +11,21 @@ public class SpotlightMover : MonoBehaviour
     private Vector3 middlePosition;
     private Vector3 rightPosition;
 
+    public bool leftPositionCam = false;
+    public bool middlePositionCam = true; // spotlight starts in the middle
+    public bool rightPositionCam = false;
+
     void Start()
     {
-        // Get the Renderer of the stage object to access its bounds
-        if (stage != null)
-        {
-            stageRenderer = stage.GetComponent<Renderer>();
-            if (stageRenderer == null)
-            {
-                Debug.LogError("Renderer component not found on the stage object!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Stage GameObject is not assigned!");
-        }
+        stageRenderer = stage.GetComponent<Renderer>(); // Get the Renderer of the stage object to access its bounds
 
-        // Set fixed positions based on the stage's bounds
         SetFixedPositions();
     }
 
     void Update()
     {
         // Flash spotlight to a random position (middle, left, or right) when the spacebar is pressed
-        if (Input.GetKeyDown(KeyCode.Space))  // Use space to trigger flash (for testing)
+        if (Input.GetKeyDown(KeyCode.E))
         {
             FlashSpotlight();
         }
@@ -42,80 +33,74 @@ public class SpotlightMover : MonoBehaviour
 
     void SetFixedPositions()
     {
-        if (stageRenderer != null)
-        {
-            Bounds stageBounds = stageRenderer.bounds;
+        Bounds stageBounds = stageRenderer.bounds;
 
-            middlePosition = new Vector3(
-                stageBounds.center.x, // Middle of the stage
-                transform.position.y, // Keep the current Y position
-                stageBounds.center.z  // Keep Z at the center of the stage
-            );
+        middlePosition = new Vector3(
+            stageBounds.center.x, // Middle of the stage
+            transform.position.y, // Keep the current Y position
+            stageBounds.center.z  // Keep Z at the center of the stage
+        );
 
-            leftPosition = new Vector3(
-                transform.position.x,
-                transform.position.y,
-                stageBounds.center.z - 6
-            );
+        leftPosition = new Vector3(
+            transform.position.x,
+            transform.position.y,
+            stageBounds.center.z - 6
+        );
 
-            rightPosition = new Vector3(
-                transform.position.x,
-                transform.position.y,
-                stageBounds.center.z + 6
-            );
-        }
+        rightPosition = new Vector3(
+            transform.position.x,
+            transform.position.y,
+            stageBounds.center.z + 6
+        );
     }
 
     void FlashSpotlight()
     {
-        if (stageRenderer != null && gameObject != null)
-        {
-            // Randomly choose one of the fixed positions (left, middle, or right)
-            Vector3 randomPosition = GetRandomPosition();
+        Vector3 randomPosition = GetRandomPosition(); // Randomly pick one of the three fixed positions
+        transform.position = randomPosition;
 
-            // Move the spotlight to the chosen position
-            transform.position = randomPosition;
-
-            // Start the flash effect
-            StartCoroutine(FlashEffect());
-        }
+        StartCoroutine(FlashEffect());
     }
 
     Vector3 GetRandomPosition()
     {
-        // Randomly pick one of the three fixed positions
         int randomIndex = Random.Range(0, 3);
         switch (randomIndex)
         {
             case 0:
+                leftPositionCam = true;
+                middlePositionCam = false;
+                rightPositionCam = false;
                 return leftPosition;
             case 1:
+                leftPositionCam = false;
+                middlePositionCam = true;
+                rightPositionCam = false;
                 return middlePosition;
             case 2:
+                leftPositionCam = false;
+                middlePositionCam = false;
+                rightPositionCam = true;
                 return rightPosition;
             default:
-                return middlePosition;  // Default fallback to middle if something goes wrong
+                leftPositionCam = false;
+                middlePositionCam = true;
+                rightPositionCam = false;
+                return middlePosition;
         }
     }
 
     IEnumerator FlashEffect()
     {
         Light light = GetComponent<Light>();
-        if (light != null)
-        {
-            // Save the original intensity of the spotlight
-            float originalIntensity = light.intensity;
+        // Save the original intensity of the spotlight
+        float originalIntensity = light.intensity;
 
-            // Flash the spotlight (turn off the light for a short moment)
-            light.intensity = 0;
-            yield return new WaitForSeconds(0.1f);  // Flash duration
+        // Flash the spotlight (turn off the light for a short moment)
+        light.intensity = 0;
+        yield return new WaitForSeconds(0.1f);  // Flash duration
 
-            light.intensity = originalIntensity;
-            yield return new WaitForSeconds(flashDuration);
-        }
-        else
-        {
-            Debug.LogError("No Light component found on the spotlight.");
-        }
+        light.intensity = originalIntensity;
+        yield return new WaitForSeconds(flashDuration);
     }
 }

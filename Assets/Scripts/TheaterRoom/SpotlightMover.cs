@@ -1,19 +1,28 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using Random = UnityEngine.Random;
 
 public class SpotlightMover : MonoBehaviour
 {
-    public GameObject stage;  // reference to the stage object
-    public float flashDuration = 0.5f;  // Duration of the spotlight flash
+    public GameObject stage;
+    public float flashDuration = 0.5f;
 
-    private Renderer stageRenderer;  // renderer of the stage (to get bounds)
+    private Renderer stageRenderer;  // (to get bounds)
     private Vector3 leftPosition;
     private Vector3 middlePosition;
     private Vector3 rightPosition;
 
     public bool leftPositionCam = false;
-    public bool middlePositionCam = true; // spotlight starts in the middle
+    public bool middlePositionCam = true;
     public bool rightPositionCam = false;
+
+    private int lastCameraIndex = -1;
+
+    public RandomAnimationController animationController;
+    public GameObject bananaMan;
+    public ProgressBarUI progressBar;
+    public MapDanceMove danceOptions;
 
     void Start()
     {
@@ -24,9 +33,16 @@ public class SpotlightMover : MonoBehaviour
 
     void Update()
     {
-        // Flash spotlight to a random position (middle, left, or right) when the spacebar is pressed
-        if (Input.GetKeyDown(KeyCode.E))
+        /* 
+        1. when timer is over
+        2. when player does wrong dance move
+        3. when player is does right dance move
+        */
+        if (progressBar.barImage.fillAmount == 0) // start next spotlight, end current one
         {
+            animationController.RotateBananaMan(bananaMan);
+            animationController.RandomDanceMove();
+            danceOptions.ResetMaterial(); // change all options to green
             FlashSpotlight();
         }
     }
@@ -44,13 +60,13 @@ public class SpotlightMover : MonoBehaviour
         leftPosition = new Vector3(
             transform.position.x,
             transform.position.y,
-            stageBounds.center.z - 6
+            stageBounds.center.z - 5
         );
 
         rightPosition = new Vector3(
             transform.position.x,
             transform.position.y,
-            stageBounds.center.z + 6
+            stageBounds.center.z + 5
         );
     }
 
@@ -64,7 +80,14 @@ public class SpotlightMover : MonoBehaviour
 
     Vector3 GetRandomPosition()
     {
-        int randomIndex = Random.Range(0, 3);
+        int randomIndex;
+        do
+        {
+            randomIndex = Random.Range(0, 3); // random spotlight mover
+        } while (randomIndex == lastCameraIndex); // spotlight never repeats position
+
+        lastCameraIndex = randomIndex; // Update the lastRandomIndex to the current one for the next call
+
         switch (randomIndex)
         {
             case 0:
@@ -93,12 +116,10 @@ public class SpotlightMover : MonoBehaviour
     IEnumerator FlashEffect()
     {
         Light light = GetComponent<Light>();
-        // Save the original intensity of the spotlight
         float originalIntensity = light.intensity;
 
-        // Flash the spotlight (turn off the light for a short moment)
         light.intensity = 0;
-        yield return new WaitForSeconds(0.1f);  // Flash duration
+        yield return new WaitForSeconds(0.1f);
 
         light.intensity = originalIntensity;
         yield return new WaitForSeconds(flashDuration);

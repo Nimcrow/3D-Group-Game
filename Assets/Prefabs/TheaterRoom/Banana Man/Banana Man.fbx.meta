@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Body
-    second: {fileID: 2100000, guid: 945e2f586a1a63a49a99d9080a8e9f24, type: 2}
+    second: {fileID: 2100000, guid: dc6917a88f1a4084ab66b2a9a5dcba1f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Joints
-    second: {fileID: 2100000, guid: 172e6d5757c566945aace63133e6ab54, type: 2}
+    second: {fileID: 2100000, guid: dc6917a88f1a4084ab66b2a9a5dcba1f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -46,7 +46,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events; // universal trigger component
@@ -22,8 +23,18 @@ public class SpotlightTrigger : MonoBehaviour
 
     public SpotlightMover spotlightMover;
 
+    public List<AudioClip> musicClips;
+
+    private AudioSource audioSourceMusic;
+    public AudioSource applauseSFX;
+    public AudioSource booSFX;
+
+    public RandomAnimationController animationController;
+
     private void Start()
     {
+        audioSourceMusic = GetComponent<AudioSource>();
+
         mainCamera.enabled = true; // ensure only the main camera is enabled at the start
         danceCamera.enabled = false;
         audienceCamera_left.enabled = false;
@@ -43,10 +54,63 @@ public class SpotlightTrigger : MonoBehaviour
         onTriggerExit.Invoke();
     }
 
+    public void PlayMusic()
+    {
+        booSFX.Pause();
+
+         string animatorControllerName = animationController.animator.runtimeAnimatorController.name;
+
+        switch (animatorControllerName)
+        {
+            case "anim.gangnamstyle":
+                audioSourceMusic.clip = musicClips[0];
+                break;
+                
+            case "anim.headspin":
+                audioSourceMusic.clip = musicClips[1]; 
+                break;
+
+            case "anim.maraschino":
+                audioSourceMusic.clip = musicClips[2]; 
+                break;
+
+            case "anim.rumba":
+                audioSourceMusic.clip = musicClips[3];
+                break;
+
+            case "anim.shuffling":
+                audioSourceMusic.clip = musicClips[4];
+                break;
+
+            case "anim.weirdwalk":
+                audioSourceMusic.clip = musicClips[5];
+                break;
+        }
+
+        audioSourceMusic.Play();
+        applauseSFX.Play();
+    }
+
+    public void PauseMusic()
+    {
+        audioSourceMusic.Pause();
+        applauseSFX.Pause();
+        booSFX.Play();
+    }
+
     public void SwitchToMainCamera()
     {
         mainCamera.enabled = true;
         danceCamera.enabled = false;
+        audienceCamera_left.enabled = false;
+        audienceCamera_middle.enabled = false;
+        audienceCamera_right.enabled = false;
+    }
+
+    public void SwitchToDanceCamera()
+    {
+        mainCamera.enabled = false;
+        danceCamera.enabled = true;
         audienceCamera_left.enabled = false;
         audienceCamera_middle.enabled = false;
         audienceCamera_right.enabled = false;
@@ -90,12 +154,4 @@ public class SpotlightTrigger : MonoBehaviour
         audienceCamera_right.enabled = true;
     }
 
-    private void SwitchToDanceCamera()
-    {
-        mainCamera.enabled = false;
-        danceCamera.enabled = true;
-        audienceCamera_left.enabled = false;
-        audienceCamera_middle.enabled = false;
-        audienceCamera_right.enabled = false;
-    }
 }

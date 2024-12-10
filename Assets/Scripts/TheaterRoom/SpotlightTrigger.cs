@@ -33,6 +33,9 @@ public class SpotlightTrigger : MonoBehaviour
 
     private void Start()
     {
+        if(!spotlightMover.hasStart)
+            gameObject.SetActive(false);
+
         audioSourceMusic = GetComponent<AudioSource>();
 
         mainCamera.enabled = true; // ensure only the main camera is enabled at the start

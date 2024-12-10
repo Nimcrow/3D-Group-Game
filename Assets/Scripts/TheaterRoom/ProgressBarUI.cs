@@ -7,9 +7,13 @@ public class ProgressBarUI : MonoBehaviour
     public Image barImage;
     public float fillDuration = 10f;
 
+    public SpotlightMover spotlightMover;
+
     private void Start()
     {
-        StartCoroutine(DecrementBar());
+        gameObject.SetActive(false); // disable entire game object until start
+        if(spotlightMover.hasStart)
+            StartCoroutine(DecrementBar());
     }
 
     // to decrement the fill amount over time

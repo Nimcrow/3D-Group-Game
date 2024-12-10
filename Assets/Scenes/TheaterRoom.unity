@@ -1001,6 +1001,10 @@ MonoBehaviour:
   - {fileID: 1638869208}
   - {fileID: 1777099141}
   - {fileID: 891456718}
+  playerModel: {fileID: 853469740}
+  incorrectMaterial: {fileID: 2100000, guid: 50c3f7f7ad968564194a9ad0d9e824ba, type: 2}
+  correctMaterial: {fileID: 2100000, guid: dc6917a88f1a4084ab66b2a9a5dcba1f, type: 2}
+  spotlightMover: {fileID: 2019712005}
 --- !u!4 &323544445
 Transform:
   m_ObjectHideFlags: 0
@@ -1009,12 +1013,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323544443}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -38.24264, y: 1.1831578, z: -2.1152892}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -17.276684, y: -2.1152892, z: 0.8968425}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2019712003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387472609
 GameObject:
@@ -1107,7 +1111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 415073656}
-  incorrectMaterial: {fileID: 2100000, guid: 50c3f7f7ad968564194a9ad0d9e824ba, type: 2}
   animationControllers:
   - {fileID: 9100000, guid: dfa87ddfad0dfde4f906c4ed3ca50d97, type: 2}
   - {fileID: 9100000, guid: 57ceb524e4fc13c449be163c8f30e107, type: 2}
@@ -1115,6 +1118,7 @@ MonoBehaviour:
   - {fileID: 9100000, guid: 3fe9d83ddb27d3f4493a9f465a7dc882, type: 2}
   - {fileID: 9100000, guid: 38aefaba67ba0bc4caa81dde43225268, type: 2}
   - {fileID: 9100000, guid: 6f9049c1a0ea8b149920b15191c8897a, type: 2}
+  spotlightMover: {fileID: 2019712005}
 --- !u!1 &424537335 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3314137955201957245, guid: fafad62e4c56d4f408730f1d5f9e6740, type: 3}
@@ -2434,7 +2438,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barImage: {fileID: 752745557}
-  fillDuration: 10
+  fillDuration: 5
+  spotlightMover: {fileID: 2019712005}
 --- !u!4 &780711665 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5335127729677876805, guid: fafad62e4c56d4f408730f1d5f9e6740, type: 3}
@@ -4949,6 +4954,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 323544444}
+        m_TargetAssemblyTypeName: MapDanceMove, Assembly-CSharp
+        m_MethodName: ResetPlayerAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   mainCamera: {fileID: 1579872499}
   danceCamera: {fileID: 1555897550}
   audienceCamera_left: {fileID: 117772489}
@@ -7142,7 +7159,7 @@ Transform:
   m_GameObject: {fileID: 1886684884}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0035172778, y: -0.70709807, z: -0.0035172778, w: 0.70709807}
-  m_LocalPosition: {x: -3.91, y: 1.36, z: -6}
+  m_LocalPosition: {x: -3.41, y: 1.47, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7431,6 +7448,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 323544445}
   - {fileID: 182536842}
   - {fileID: 415073654}
   - {fileID: 1326766195}
@@ -7520,6 +7538,8 @@ MonoBehaviour:
   animationController: {fileID: 415073657}
   bananaMan: {fileID: 415073652}
   progressBar: {fileID: 752745559}
+  danceOptions: {fileID: 323544444}
+  hasStart: 0
 --- !u!1001 &2058514650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7941,6 +7961,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 98863945}
   - {fileID: 1187215444}
   - {fileID: 620031576}
   - {fileID: 970255891}
@@ -7948,5 +7969,3 @@ SceneRoots:
   - {fileID: 1031199089}
   - {fileID: 2019712003}
   - {fileID: 617029848}
-  - {fileID: 98863945}
-  - {fileID: 323544445}

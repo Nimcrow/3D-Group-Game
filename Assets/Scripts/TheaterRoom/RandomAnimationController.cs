@@ -5,9 +5,16 @@ public class RandomAnimationController : MonoBehaviour
     public Animator animator;
     public RuntimeAnimatorController[] animationControllers; // array of animation controllers (different dance animations)
 
+    public SpotlightMover spotlightMover;
+
     void Start()
     {
-        RandomDanceMove();
+        gameObject.SetActive(false); // disable entire game object until start
+        if(spotlightMover.hasStart)
+        {
+            RandomDanceMove();
+            gameObject.SetActive(true);
+        }
     }
 
     public void RotateBananaMan(GameObject bananaMan)

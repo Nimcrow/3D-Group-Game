@@ -18,21 +18,24 @@ public class SpotlightMover : MonoBehaviour
     public bool rightPositionCam = false;
 
     private int lastCameraIndex = -1;
+    private int spotlightSwitches = 0;
 
     public RandomAnimationController animationController;
     public GameObject bananaMan;
     public ProgressBarUI progressBar;
     public MapDanceMove danceOptions;
 
+    public bool hasStart = false;
+
     void Start()
     {
         stageRenderer = stage.GetComponent<Renderer>(); // Get the Renderer of the stage object to access its bounds
-
-        SetFixedPositions();
+        //StartMiniGame();
     }
 
     void Update()
     {
+        if (!hasStart) return;
         /* 
         1. when timer is over
         2. when player does wrong dance move
@@ -44,7 +47,23 @@ public class SpotlightMover : MonoBehaviour
             animationController.RandomDanceMove();
             danceOptions.ResetMaterial(); // change all options to green
             FlashSpotlight();
+
+            spotlightSwitches++;
+            if (spotlightSwitches >= 1)
+                StopMiniGame();
         }
+    }
+
+    void StartMiniGame()
+    {
+        hasStart = true;
+        SetFixedPositions();
+    }
+
+    void StopMiniGame()
+    {
+        transform.position = new Vector3(1000f, transform.position.y, 1000f);
+        StopCoroutine("FlashEffect");
     }
 
     void SetFixedPositions()

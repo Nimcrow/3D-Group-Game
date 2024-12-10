@@ -135,6 +135,7 @@ public class SportsBoss : MonoBehaviour
         if (coll.gameObject.CompareTag("Ammo") && isVulnerable == true)
         {
             Destroy(coll.gameObject);
+            BossManager.Instance.DamageBoss();
             health--;
         }
 

@@ -430,7 +430,7 @@ RectTransform:
   m_GameObject: {fileID: 61932887}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
+  m_LocalScale: {x: 1.4285711, y: 1.4285713, z: 1.4285711}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1250397737}
@@ -438,7 +438,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.7570002, y: -1.9820007}
+  m_AnchoredPosition: {x: -0.75699997, y: -1.9820012}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &61932889
@@ -770,6 +770,7 @@ GameObject:
   - component: {fileID: 182536845}
   - component: {fileID: 182536844}
   - component: {fileID: 182536843}
+  - component: {fileID: 182536847}
   m_Layer: 0
   m_Name: ProgressBarUI
   m_TagString: Untagged
@@ -861,6 +862,48 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!23 &182536847
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182536841}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!4 &239824910 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2749718694883853947, guid: fafad62e4c56d4f408730f1d5f9e6740, type: 3}
@@ -1390,7 +1433,7 @@ RectTransform:
   m_GameObject: {fileID: 552571055}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 738173755}
@@ -1398,7 +1441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.757, y: 0}
+  m_AnchoredPosition: {x: -0.7570002, y: -0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &552571057
@@ -2141,7 +2184,7 @@ RectTransform:
   m_GameObject: {fileID: 721895604}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1457210257}
@@ -2149,7 +2192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0, y: -0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &721895606
@@ -2438,7 +2481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barImage: {fileID: 752745557}
-  fillDuration: 5
+  fillDuration: 10
   spotlightMover: {fileID: 2019712005}
 --- !u!4 &780711665 stripped
 Transform:
@@ -3123,7 +3166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950679429}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.012863801, y: 0.64579517, z: -0.010883165, w: 0.76332486}
+  m_LocalRotation: {x: 0.076146506, y: 0.31539398, z: -0.025398869, w: 0.9455598}
   m_LocalPosition: {x: -12.26, y: 2.54, z: -6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3755,7 +3798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8994621995709668326, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.69
+      value: -20.06
       objectReference: {fileID: 0}
     - target: {fileID: 8994621995709668326, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4185,6 +4228,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 81bb9eea30387e442899949a80011e55, type: 3}
       propertyPath: m_Name
       value: dbm - 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 81bb9eea30387e442899949a80011e55, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 81bb9eea30387e442899949a80011e55, type: 3}
       propertyPath: m_Controller
@@ -4982,6 +5029,7 @@ MonoBehaviour:
   applauseSFX: {fileID: 2123589713}
   booSFX: {fileID: 822045350}
   animationController: {fileID: 415073657}
+  isPlayerInSpotlight: 0
 --- !u!82 &1550259471
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5644,7 +5692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555897548}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0128638325, y: 0.6457952, z: -0.01088318, w: 0.76332474}
+  m_LocalRotation: {x: 0.076146506, y: 0.31539404, z: -0.025398877, w: 0.94555974}
   m_LocalPosition: {x: -12.26, y: 2.54, z: -6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5804,7 +5852,7 @@ RectTransform:
   m_GameObject: {fileID: 1577029731}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1886458041}
@@ -5812,7 +5860,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.757, y: -0.974}
+  m_AnchoredPosition: {x: -0.75699997, y: -0.9740007}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1577029733
@@ -6244,7 +6292,7 @@ RectTransform:
   m_GameObject: {fileID: 1645575490}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 510116121}
@@ -6252,7 +6300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0, y: -1.985}
+  m_AnchoredPosition: {x: 0, y: -1.9850006}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1645575492
@@ -6548,7 +6596,7 @@ RectTransform:
   m_GameObject: {fileID: 1791556968}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
+  m_LocalScale: {x: 1.4285712, y: 1.4285713, z: 1.4285712}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1170661056}
@@ -6556,7 +6604,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0, y: -0.976}
+  m_AnchoredPosition: {x: 0, y: -0.9760008}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1791556970
@@ -7428,6 +7476,7 @@ GameObject:
   - component: {fileID: 2019712003}
   - component: {fileID: 2019712004}
   - component: {fileID: 2019712005}
+  - component: {fileID: 2019712006}
   m_Layer: 0
   m_Name: spotlight
   m_TagString: Untagged
@@ -7540,6 +7589,21 @@ MonoBehaviour:
   progressBar: {fileID: 752745559}
   danceOptions: {fileID: 323544444}
   hasStart: 0
+  spotlightTrigger: {fileID: 1550259470}
+--- !u!114 &2019712006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019712002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6031b2d49667f4ea661e9c94f7d76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spotlightMover: {fileID: 2019712005}
+  spotlightTrigger: {fileID: 1550259467}
 --- !u!1001 &2058514650
 PrefabInstance:
   m_ObjectHideFlags: 0

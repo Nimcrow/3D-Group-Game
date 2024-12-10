@@ -13,42 +13,36 @@ public class MapDanceMove : MonoBehaviour
 
     public SpotlightMover spotlightMover;
 
+    private bool hasDanceMoveStarted = false;
+
     void Start()
     {
-        for (int i = 0; i < 6; i++)
-            mappedObjects[i].SetActive(false);
-
-        if(spotlightMover.hasStart)
-        {
-            for (int i = 0; i < 6; i++)
-                mappedObjects[i].SetActive(true);
-
-            // Store the default PlayerAnimatorController at the start
-            Animator playerAnimator = playerModel.GetComponent<Animator>();
-            if (playerAnimator != null)
-            {
-                defaultPlayerAnimatorController = playerAnimator.runtimeAnimatorController;
-            }
-        }
-
+        // Store the default PlayerAnimatorController at the start
+        Animator playerAnimator = playerModel.GetComponent<Animator>();
+        if (playerAnimator != null)
+            defaultPlayerAnimatorController = playerAnimator.runtimeAnimatorController;
     }
 
     void Update()
     {
-        // Loop through keys 1-6 to detect key presses
-        for (int i = 0; i < 6; i++)
+        if (spotlightMover.hasStart)
         {
-            if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha1 + i))) // maps 1 -> 6 to keys 1 to 6
+            // Loop through keys 1-6 to detect key presses
+            for (int i = 0; i < 6; i++)
             {
-                Debug.Log("You pressed number: " + (i + 1));
+                if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha1 + i))) // maps 1 -> 6 to keys 1 to 6
+                {
+                    Debug.Log("You pressed number: " + (i + 1));
 
-                // change the material for the selected banana man (based on the index)
-                ChangeMaterial(i);
+                    // change the material for the selected banana man (based on the index)
+                    ChangeMaterial(i);
 
-                // trigger the animation for the selected banana man (based on the index)
-                TriggerDanceMove(i);
+                    // trigger the animation for the selected banana man (based on the index)
+                    TriggerDanceMove(i);
+                }
             }
         }
+
     }
 
     // change the material of the selected banana man to selected

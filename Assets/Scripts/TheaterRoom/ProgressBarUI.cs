@@ -9,11 +9,15 @@ public class ProgressBarUI : MonoBehaviour
 
     public SpotlightMover spotlightMover;
 
-    private void Start()
+    private bool hasDanceMoveStarted = false; // Flag to ensure the dance move only starts once
+
+    void Update()
     {
-        gameObject.SetActive(false); // disable entire game object until start
-        if(spotlightMover.hasStart)
+        if (spotlightMover.hasStart && !hasDanceMoveStarted)
+        {
             StartCoroutine(DecrementBar());
+            hasDanceMoveStarted = true;
+        }
     }
 
     // to decrement the fill amount over time

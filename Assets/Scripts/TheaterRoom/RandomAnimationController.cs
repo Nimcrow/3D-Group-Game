@@ -9,12 +9,7 @@ public class RandomAnimationController : MonoBehaviour
 
     void Start()
     {
-        gameObject.SetActive(false); // disable entire game object until start
-        if(spotlightMover.hasStart)
-        {
-            RandomDanceMove();
-            gameObject.SetActive(true);
-        }
+        RandomDanceMove();
     }
 
     public void RotateBananaMan(GameObject bananaMan)

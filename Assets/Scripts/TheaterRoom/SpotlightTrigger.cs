@@ -31,11 +31,11 @@ public class SpotlightTrigger : MonoBehaviour
 
     public RandomAnimationController animationController;
 
+    public bool isPlayerInSpotlight = false;
+    private bool firstTime = true;
+
     private void Start()
     {
-        if(!spotlightMover.hasStart)
-            gameObject.SetActive(false);
-
         audioSourceMusic = GetComponent<AudioSource>();
 
         mainCamera.enabled = true; // ensure only the main camera is enabled at the start
@@ -45,16 +45,35 @@ public class SpotlightTrigger : MonoBehaviour
         audienceCamera_right.enabled = false;
     }
 
+    private void Update()
+    {
+        // continuously check if the player is in the spotlight
+        if (isPlayerInSpotlight && !spotlightMover.hasStart 
+            && Input.GetKeyDown(KeyCode.E) && firstTime)
+        {
+            spotlightMover.StartMiniGame();
+            spotlightMover.hasStart = true;
+            firstTime = false;
+            onTriggerEnter.Invoke();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!String.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
-        onTriggerEnter.Invoke();
+        isPlayerInSpotlight = true;
+
+        if (spotlightMover.hasStart)
+            onTriggerEnter.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!String.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
-        onTriggerExit.Invoke();
+        isPlayerInSpotlight = false;
+
+        if (spotlightMover.hasStart)
+            onTriggerExit.Invoke();
     }
 
     public void PlayMusic()

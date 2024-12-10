@@ -27,15 +27,17 @@ public class SpotlightMover : MonoBehaviour
 
     public bool hasStart = false;
 
+    public SpotlightTrigger spotlightTrigger;
+
     void Start()
     {
         stageRenderer = stage.GetComponent<Renderer>(); // Get the Renderer of the stage object to access its bounds
-        //StartMiniGame();
     }
 
     void Update()
     {
         if (!hasStart) return;
+
         /* 
         1. when timer is over
         2. when player does wrong dance move
@@ -54,7 +56,7 @@ public class SpotlightMover : MonoBehaviour
         }
     }
 
-    void StartMiniGame()
+    public void StartMiniGame()
     {
         hasStart = true;
         SetFixedPositions();
@@ -64,6 +66,7 @@ public class SpotlightMover : MonoBehaviour
     {
         transform.position = new Vector3(1000f, transform.position.y, 1000f);
         StopCoroutine("FlashEffect");
+        // spawn exit
     }
 
     void SetFixedPositions()

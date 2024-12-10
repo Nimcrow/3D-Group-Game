@@ -27,11 +27,11 @@ public class Ammo : MonoBehaviour
         {
             if (rb.velocity.magnitude > 0.1f)
             {
-                Debug.Log($"Ammo is flying! Velocity: {rb.velocity}");
+                // Debug.Log($"Ammo is flying! Velocity: {rb.velocity}");
             }
             else
             {
-                Debug.Log("Ammo is not moving!");
+                //Debug.Log("Ammo is not moving!");
             }
         }
     }
@@ -49,7 +49,7 @@ public class Ammo : MonoBehaviour
         }
 
         // Destroy the ammo upon collision
-        Debug.Log($"Ammo hit: {collision.gameObject.name}");
+        //Debug.Log($"Ammo hit: {collision.gameObject.name}");
         Destroy(gameObject);
     }
 }

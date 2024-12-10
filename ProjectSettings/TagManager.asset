@@ -7,6 +7,10 @@ TagManager:
   - Enemy
   - Walls
   - Destructible Walls
+  - Interactable/Change Scene
+  - Interactable/Pickup
+  - Rock
+  - Ammo
   layers:
   - Default
   - TransparentFX

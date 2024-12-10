@@ -17,16 +17,16 @@ public class SportsBoss : MonoBehaviour
     public float chargeDuration; // How long the boss charges
     public float idleTimer; // Timer to allow the player to recover after a hit
     public Material bossNormal, bossStunned, bossEnraged; // Materials for the boss
+    public bool isEnraged; // Checks to see if the boss is in its enraged state
+    public string bossState; // The current state that the boss is in
 
     private Vector3 chargeDir; // The direction the boss is charging
     private int health; // Current boss health
-    private string bossState; // The current state that the boss is in
     private Rigidbody rigidBody; // Helps for checking collisions
     private bool isVulnerable; // Allows boss to be damaged
     private float timer; // Game timer
     private Renderer bossRenderer; // Used to change the boss's material
-    private bool isEnraged; // Checks to see if the boss is in its enraged state
-    private int playerHP;
+    private int playerHP; // Player's current HP
 
     // Start is called before the first frame update
     private void Start()
@@ -44,6 +44,7 @@ public class SportsBoss : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        Debug.Log(health);
         chargeDir.y = 4f;
         // Different switch cases for the states that the boss is in
         switch (bossState)
@@ -70,7 +71,7 @@ public class SportsBoss : MonoBehaviour
     }
 
     // The boss is stunned allowing the player to attack it
-    public void Stun()
+    void Stun()
     {
         bossRenderer.material = bossStunned;
         isVulnerable = true;
@@ -131,12 +132,17 @@ public class SportsBoss : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
+        if (coll.gameObject.CompareTag("Ammo") && isVulnerable == true)
+        {
+            Destroy(coll.gameObject);
+            health--;
+        }
+
         if (bossState == "Charging")
         {
 
             if (coll.gameObject.CompareTag("Walls") || coll.gameObject.CompareTag("Destructible Walls"))
             {
-                health--;
                 if(coll.gameObject.CompareTag("Destructible Walls"))
                 {
                     Destroy(coll.gameObject);
@@ -155,6 +161,8 @@ public class SportsBoss : MonoBehaviour
             }
             else if (coll.gameObject.CompareTag("Player"))
             {
+                // Access GameManager and drop the grade
+                GameManager.Instance.DropLetterGrade();
                 playerHP--;
                 timer = 0f;
                 if (timer >= idleTimer)

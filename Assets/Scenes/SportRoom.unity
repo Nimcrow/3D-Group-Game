@@ -680,15 +680,15 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3515580559056477645, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
   m_PrefabInstance: {fileID: 2002436571}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &138545310 stripped
+--- !u!114 &138545311 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8217605491376690859, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8201458415195511462, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
   m_PrefabInstance: {fileID: 2002436571}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138545309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9c7fe41ce44094682503072fdb1338, type: 3}
+  m_Script: {fileID: 11500000, guid: 120a84eb990274b4186c0beda9a3616e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &167249167
@@ -3219,11 +3219,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5409d3a5eec7e084c8323125b63fd373, type: 3}
       propertyPath: m_LocalScale.y
-      value: 100
+      value: 99.99997
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5409d3a5eec7e084c8323125b63fd373, type: 3}
       propertyPath: m_LocalScale.z
-      value: 60
+      value: 59.99999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5409d3a5eec7e084c8323125b63fd373, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4973,7 +4973,7 @@ PrefabInstance:
     - target: {fileID: 3161033175881395130, guid: e58f618e23f80fc448fb0cf0fa2f41ac, type: 3}
       propertyPath: playerController
       value: 
-      objectReference: {fileID: 138545310}
+      objectReference: {fileID: 138545311}
     - target: {fileID: 3188061374422442652, guid: e58f618e23f80fc448fb0cf0fa2f41ac, type: 3}
       propertyPath: m_Name
       value: Power Up
@@ -5654,7 +5654,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2713936611260119026, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6274,7 +6275,7 @@ PrefabInstance:
     - target: {fileID: 7545391904162911466, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
       propertyPath: playerController
       value: 
-      objectReference: {fileID: 138545310}
+      objectReference: {fileID: 138545311}
     - target: {fileID: 8849284812427743064, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6315,8 +6316,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4630076886046458061, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8849284812427743064, guid: 2f3a69982b686c74080511a7297f2819, type: 3}
@@ -6351,7 +6351,7 @@ PrefabInstance:
     - target: {fileID: 4491829025229844353, guid: 39eb98ac754481b44ad039baa7e0b5db, type: 3}
       propertyPath: playerController
       value: 
-      objectReference: {fileID: 138545310}
+      objectReference: {fileID: 0}
     - target: {fileID: 9169191844934066517, guid: 39eb98ac754481b44ad039baa7e0b5db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 80.12429

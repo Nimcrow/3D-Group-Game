@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ArtRoom.unity
     guid: d47c3131c3bf1e6458056c6ae551b43e
+  - enabled: 1
+    path: Assets/Scenes/GeologyRoom.unity
+    guid: 10122cf628f2c884da1f5e8c70bd46e9
   m_configObjects: {}

@@ -1449,6 +1449,7 @@ MonoBehaviour:
   chaseSpeed: 4
   shield: {fileID: 1128141689}
   maxHitsToActivateShield: 4
+  collisionDamage: 10
 --- !u!65 &1052950716
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2918,7 +2919,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2713936611260119026, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

@@ -19,6 +19,7 @@ public class Ammo : MonoBehaviour
 
         // Make the ammo extremely light so it imparts virtually no force
         rb.mass = 0.001f;
+    }
 
     void Update()
     {
@@ -43,6 +44,7 @@ public class Ammo : MonoBehaviour
         // Destroy the ammo after its lifespan
         Destroy(gameObject, lifespan);
     }
+
 
     void OnCollisionEnter(Collision collision)
     {

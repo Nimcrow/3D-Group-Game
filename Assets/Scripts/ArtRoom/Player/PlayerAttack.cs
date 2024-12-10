@@ -8,6 +8,19 @@ public class PlayerShooting : MonoBehaviour
     public float verticalOffset = 1.0f; // Height offset for bullet spawning
     public Camera playerCamera; // Reference to the player's camera
 
+    [SerializeField] private AudioClip shootSound; // Assign the shooting sound in the Inspector
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        // Ensure an AudioSource is attached to the player
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) // Left mouse button
@@ -18,6 +31,12 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot()
     {
+        // Play shooting sound
+        if (shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
+
         // Raycast to detect where the cursor is pointing in the world
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

@@ -7,6 +7,12 @@ TagManager:
   - Enemy
   - Walls
   - Destructible Walls
+  - Interactable/Change Scene
+  - Interactable/Pickup
+  - Rock
+  - Ammo
+  - SpotlightTrigger
+  - Audio
   layers:
   - Default
   - TransparentFX

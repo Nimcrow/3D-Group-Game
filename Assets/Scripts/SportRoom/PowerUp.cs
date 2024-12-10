@@ -15,6 +15,12 @@ public class PowerUp : MonoBehaviour
     private Renderer powerRenderer;
     private float timer;
     private bool destroy;
+    private AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +77,7 @@ public class PowerUp : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Player"))
         {
+            audioManager.PlaySFX(audioManager.powerUp);
             switch (powerType)
             {
                 case 1:

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -8745157464293610305}
   m_Layer: 0
   m_Name: Ammo
-  m_TagString: Untagged
+  m_TagString: Ammo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,7 +54,7 @@ MeshRenderer:
   m_GameObject: {fileID: 8397484812380773814}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifespan: 5
-  damage: 5
+  damage: 10
 --- !u!54 &-2625427558868898232
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,7 +148,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &-8745157464293610305
 SphereCollider:
   m_ObjectHideFlags: 0

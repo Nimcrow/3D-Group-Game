@@ -1,41 +1,62 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
-    public GameObject playerObject; // Drag the player GameObject here in the Inspector
-    public GameObject finishPoint; // Reference to the FinishPoint GameObject
-    private Transform player;       // Reference to the player's Transform
-    private Animator animator;      // Reference to the Animator component
-
+    [Header("References")]
+    public GameObject playerObject;
+    public GameObject finishPoint;
     public LayerMask whatIsPlayer;
 
-    public float health = 100;
+    private Transform player;
+    private Animator animator;
 
-    // Attacking
-    public float timeBetweenAttacks = 1f;
+    [Header("Enemy Settings")]
+    [SerializeField] private float health = 100f;
+    public float Health => health;
+
+    [Header("Attack Settings")]
+    [SerializeField] private float timeBetweenAttacks = 1f;
     private bool alreadyAttacked;
-    public GameObject projectile; // Regular projectile
-    public GameObject specialProjectile; // Special projectile
-    public float verticalOffset = 1f; // Vertical offset for projectile spawn position
-    private int attackCounter = 0; // Counter to track attacks
+    private bool isAttacking;
+    public GameObject projectile;         
+    public GameObject specialProjectile;  
+    [SerializeField] private float verticalOffset = 1f;
+    private int attackCounter = 0;
+    public Transform throwPoint;
 
-    // States
-    public float sightRange = 10f, attackRange = 5f;
+    [Header("Ranges")]
+    [SerializeField] private float sightRange = 10f;
+    [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float proximityRange = 1.0f;
     private bool playerInSightRange, playerInAttackRange;
 
-    // Movement
-    public float chaseSpeed = 4f; // Speed for chasing
+    [Header("Speeds")]
+    [SerializeField] private float chaseSpeed = 4f;
+    [SerializeField] private float enragedChaseSpeed = 8f;
 
-    // Shield
-    public GameObject shield; // Reference to the shield GameObject
-    public int maxHitsToActivateShield = 4;
-    private int currentHits = 0;
-    private bool isShieldActive = false;
+    [Header("Enraged State")]
+    [SerializeField] private float enragedInterval = 10f;
+    [SerializeField] private float enragedDuration = 4f;
+    private bool isEnraged = false;
+
+    [Header("Shield")]
+    public GameObject shield;
     private MeshRenderer shieldRenderer;
     private SphereCollider shieldCollider;
 
-    // Player collision damage
-    [SerializeField] private int collisionDamage = 10; // Damage dealt to the player on collision
+    [Header("Collision Damage")]
+    [SerializeField] private int collisionDamage = 10;
+    private float nextDamageTime = 0f;
+    private float damageInterval = 1f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip enragedSound;
+    [SerializeField] private AudioClip runningSound;
+    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip impactSound;
+    [SerializeField] private AudioClip deathSound;
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -44,9 +65,8 @@ public class EnemyAI : MonoBehaviour
             player = playerObject.transform;
         }
 
-        animator = GetComponent<Animator>(); // Get the Animator component
+        animator = GetComponent<Animator>();
 
-        // Ensure the shield is deactivated at the start
         if (shield != null)
         {
             shieldRenderer = shield.GetComponent<MeshRenderer>();
@@ -55,146 +75,268 @@ public class EnemyAI : MonoBehaviour
             if (shieldRenderer != null) shieldRenderer.enabled = false;
             if (shieldCollider != null) shieldCollider.enabled = false;
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
+    private void Start()
+    {
+        StartCoroutine(EnragedCycle());
     }
 
     private void Update()
     {
-        if (player == null)
-            return;
+        if (player == null) return;
 
-        // Check for sight and attack range
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        transform.LookAt(player);
 
-        if (playerInSightRange)
+        // Only check ranges if not enraged
+        if (!isEnraged)
         {
-            ChasePlayer(); // Always chase when player is detected
+            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
         }
 
-        if (playerInAttackRange)
+        if (isEnraged)
         {
-            AttackPlayer(); // Attack when in attack range
+            HandleEnragedState();
         }
-
-        // Update running animation state (run while chasing or attacking)
-        if (animator != null)
+        else
         {
-            animator.SetBool("isRunning", playerInSightRange);
+            HandleNormalState();
         }
     }
 
-    private void ChasePlayer()
+    private void HandleEnragedState()
+    {
+        if (isAttacking)
+        {
+            // Don't reset attack prematurely; just wait for ResetAttack() to run
+            animator.ResetTrigger("Attack");
+        }
+
+        animator.SetBool("isRunning", true);
+
+        if (runningSound != null && !audioSource.isPlaying)
+        {
+            PlayRunningSound();
+        }
+
+        ChasePlayer(enragedChaseSpeed);
+
+        if (Physics.CheckSphere(transform.position, proximityRange, whatIsPlayer) && Time.time >= nextDamageTime)
+        {
+            ApplyCollisionDamage();
+            nextDamageTime = Time.time + damageInterval;
+        }
+    }
+
+    private void HandleNormalState()
+    {
+        // If currently attacking, do not move or do anything else until attack resets
+        if (isAttacking)
+        {
+            animator.SetBool("isRunning", false);
+            return;
+        }
+
+        // If we are not currently attacking:
+        if (playerInAttackRange)
+        {
+            // Attack if we haven't already attacked recently
+            if (!alreadyAttacked)
+            {
+                AttackPlayer();
+            }
+            else
+            {
+                // We attacked recently and are waiting for ResetAttack
+                // Stand still and wait
+                animator.SetBool("isRunning", false);
+            }
+        }
+        else
+        {
+            // Player not in attack range
+            if (playerInSightRange)
+            {
+                // Chase the player
+                animator.SetBool("isRunning", true);
+
+                if (runningSound != null && !audioSource.isPlaying)
+                {
+                    PlayRunningSound();
+                }
+
+                ChasePlayer(chaseSpeed);
+            }
+            else
+            {
+                // Player not in sight range, stand still
+                animator.SetBool("isRunning", false);
+            }
+        }
+    }
+
+    private IEnumerator EnragedCycle()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(enragedInterval);
+
+            isEnraged = true;
+            EnableShield(true);
+            PlayEnragedSound();
+
+            yield return new WaitForSeconds(enragedDuration);
+
+            isEnraged = false;
+            EnableShield(false);
+        }
+    }
+
+    private void EnableShield(bool enable)
+    {
+        if (shieldRenderer != null) shieldRenderer.enabled = enable;
+        if (shieldCollider != null) shieldCollider.enabled = enable;
+    }
+
+    private void ChasePlayer(float speed)
     {
         Vector3 direction = (player.position - transform.position).normalized;
-        transform.Translate(direction * chaseSpeed * Time.deltaTime, Space.World);
+        transform.Translate(direction * speed * Time.deltaTime, Space.World);
     }
 
     private void AttackPlayer()
     {
-        // Look at the player
-        transform.LookAt(player);
+        if (isEnraged) return;
+        if (!playerInAttackRange) return;
 
-        if (!alreadyAttacked)
+        isAttacking = true;
+        attackCounter++;
+        animator.SetTrigger("Attack");
+
+        alreadyAttacked = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks);
+    }
+
+    public void SpawnProjectile()
+    {
+        if (throwPoint == null)
         {
-            attackCounter++;
+            Debug.LogWarning("ThrowPoint is not assigned on " + gameObject.name);
+            return;
+        }
 
-            // Determine which projectile to shoot
-            GameObject chosenProjectile = (attackCounter % 4 == 0) ? specialProjectile : projectile;
+        GameObject chosenProjectile = (attackCounter % 4 == 0) ? specialProjectile : projectile;
+        if (chosenProjectile == null)
+        {
+            Debug.LogWarning("No projectile assigned!");
+            return;
+        }
 
-            if (chosenProjectile != null)
-            {
-                Vector3 spawnPosition = transform.position + transform.forward + Vector3.up * verticalOffset;
-                GameObject projectileInstance = Instantiate(chosenProjectile, spawnPosition, Quaternion.identity);
+        Vector3 horizontalDirection = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
+        Quaternion spawnRotation = Quaternion.LookRotation(horizontalDirection);
+        Vector3 spawnPosition = throwPoint.position + (Vector3.up * verticalOffset);
 
-                Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-                }
+        GameObject projectileInstance = Instantiate(chosenProjectile, spawnPosition, spawnRotation);
 
-                // Assign "splat trigger" logic if special projectile
-                if (attackCounter % 4 == 0)
-                {
-                    SpecialProjectile special = projectileInstance.GetComponent<SpecialProjectile>();
-                    if (special != null)
-                    {
-                        special.AssignPlayer(playerObject);
-                    }
-                }
-            }
+        SpecialProjectile specialComp = projectileInstance.GetComponent<SpecialProjectile>();
+        if (specialComp != null && playerObject != null)
+        {
+            specialComp.AssignPlayer(playerObject);
+        }
 
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(horizontalDirection * 32f, ForceMode.Impulse);
         }
     }
 
     private void ResetAttack()
     {
         alreadyAttacked = false;
+        isAttacking = false;
+        animator.ResetTrigger("Attack");
+    }
+
+    private void ApplyCollisionDamage()
+    {
+        PlayerHealth playerHealth = playerObject.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(collisionDamage);
+            Debug.Log($"Player took {collisionDamage} damage due to proximity during enraged state.");
+
+            // Play the impact sound if assigned
+            if (audioSource != null && impactSound != null)
+            {
+                audioSource.PlayOneShot(impactSound);
+            }
+        }
     }
 
     public void TakeDamage(int damage)
     {
-        if (isShieldActive)
-        {
-            Debug.Log("Attack blocked by shield!");
-            DeactivateShield();
-            return;
-        }
-
-        currentHits++;
-        if (currentHits >= maxHitsToActivateShield)
-        {
-            ActivateShield();
-        }
+        if (isEnraged) return;
 
         health -= damage;
-
         if (health <= 0)
         {
-            Debug.Log("Enemy defeated!");
-
-            // Activate the finish point when the enemy is defeated
             if (finishPoint != null)
             {
                 FinishPoint finishPointScript = finishPoint.GetComponent<FinishPoint>();
                 if (finishPointScript != null)
                 {
+                    // Play death sound before activating the finish point
+                    PlayDeathSound();
                     finishPointScript.ActivateFinishPoint();
                 }
+            }
+            else
+            {
+                // If there's no finish point, still play the death sound
+                PlayDeathSound();
             }
 
             Destroy(gameObject);
         }
     }
 
-    private void ActivateShield()
+    public void PlayEnragedSound()
     {
-        if (shieldRenderer != null) shieldRenderer.enabled = true;
-        if (shieldCollider != null) shieldCollider.enabled = true;
-
-        isShieldActive = true;
-    }
-
-    private void DeactivateShield()
-    {
-        if (shieldRenderer != null) shieldRenderer.enabled = false;
-        if (shieldCollider != null) shieldCollider.enabled = false;
-
-        isShieldActive = false;
-        currentHits = 0;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject == playerObject)
+        if (audioSource != null && enragedSound != null)
         {
-            // Assuming the player has a script with a TakeDamage method
-            var playerHealth = playerObject.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(collisionDamage);
-            }
+            audioSource.PlayOneShot(enragedSound);
+        }
+    }
+
+    public void PlayRunningSound()
+    {
+        if (audioSource != null && runningSound != null)
+        {
+            audioSource.PlayOneShot(runningSound);
+        }
+    }
+
+    public void PlayAttackSound()
+    {
+        if (audioSource != null && attackSound != null)
+        {
+            audioSource.PlayOneShot(attackSound);
+        }
+    }
+
+    public void PlayDeathSound()
+    {
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
         }
     }
 }

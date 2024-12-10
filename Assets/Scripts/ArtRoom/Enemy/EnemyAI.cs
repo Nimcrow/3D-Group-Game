@@ -3,58 +3,60 @@ using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
+    [Header("References")]
     public GameObject playerObject;
     public GameObject finishPoint;
+    public LayerMask whatIsPlayer;
+
     private Transform player;
     private Animator animator;
 
-    public LayerMask whatIsPlayer;
-
+    [Header("Enemy Settings")]
     [SerializeField] private float health = 100f;
+    public float Health => health;
 
-    // Attacking
+    [Header("Attack Settings")]
     [SerializeField] private float timeBetweenAttacks = 1f;
     private bool alreadyAttacked;
     private bool isAttacking;
-    public GameObject projectile;
-    public GameObject specialProjectile;
+    public GameObject projectile;         
+    public GameObject specialProjectile;  
     [SerializeField] private float verticalOffset = 1f;
     private int attackCounter = 0;
     public Transform throwPoint;
 
-    // States
+    [Header("Ranges")]
     [SerializeField] private float sightRange = 10f;
     [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float proximityRange = 1.0f;
     private bool playerInSightRange, playerInAttackRange;
 
-    // Movement
+    [Header("Speeds")]
     [SerializeField] private float chaseSpeed = 4f;
     [SerializeField] private float enragedChaseSpeed = 8f;
 
-    // Enraged State
+    [Header("Enraged State")]
     [SerializeField] private float enragedInterval = 10f;
     [SerializeField] private float enragedDuration = 4f;
     private bool isEnraged = false;
 
-    // Shield visual for enraged state
+    [Header("Shield")]
     public GameObject shield;
     private MeshRenderer shieldRenderer;
     private SphereCollider shieldCollider;
 
-    // Player collision damage
+    [Header("Collision Damage")]
     [SerializeField] private int collisionDamage = 10;
-
-    // Damage Cooldown for proximity damage while enraged
     private float nextDamageTime = 0f;
     private float damageInterval = 1f;
 
-    // Audio
-    [SerializeField] private AudioClip enrageSound; // Enrage sound effect
-    [SerializeField] private AudioClip attackSound; // Attack sound effect
-    [SerializeField] private AudioClip walkingSound; // Walking sound effect
+    [Header("Audio")]
+    [SerializeField] private AudioClip enragedSound;
+    [SerializeField] private AudioClip runningSound;
+    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip impactSound;
+    [SerializeField] private AudioClip deathSound;
     private AudioSource audioSource;
-
-    private bool isWalkingSoundPlaying = false; // Track if walking sound is playing
 
     private void Awake()
     {
@@ -74,7 +76,6 @@ public class EnemyAI : MonoBehaviour
             if (shieldCollider != null) shieldCollider.enabled = false;
         }
 
-        // Ensure an AudioSource is attached
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -93,6 +94,7 @@ public class EnemyAI : MonoBehaviour
 
         transform.LookAt(player);
 
+        // Only check ranges if not enraged
         if (!isEnraged)
         {
             playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
@@ -107,23 +109,26 @@ public class EnemyAI : MonoBehaviour
         {
             HandleNormalState();
         }
-
-        ManageWalkingSound();
     }
 
     private void HandleEnragedState()
     {
         if (isAttacking)
         {
-            ResetAttack();
+            // Don't reset attack prematurely; just wait for ResetAttack() to run
             animator.ResetTrigger("Attack");
         }
 
         animator.SetBool("isRunning", true);
+
+        if (runningSound != null && !audioSource.isPlaying)
+        {
+            PlayRunningSound();
+        }
+
         ChasePlayer(enragedChaseSpeed);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= 0.25f && Time.time >= nextDamageTime)
+        if (Physics.CheckSphere(transform.position, proximityRange, whatIsPlayer) && Time.time >= nextDamageTime)
         {
             ApplyCollisionDamage();
             nextDamageTime = Time.time + damageInterval;
@@ -132,26 +137,49 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleNormalState()
     {
+        // If currently attacking, do not move or do anything else until attack resets
+        if (isAttacking)
+        {
+            animator.SetBool("isRunning", false);
+            return;
+        }
+
+        // If we are not currently attacking:
         if (playerInAttackRange)
         {
-            AttackPlayer();
+            // Attack if we haven't already attacked recently
+            if (!alreadyAttacked)
+            {
+                AttackPlayer();
+            }
+            else
+            {
+                // We attacked recently and are waiting for ResetAttack
+                // Stand still and wait
+                animator.SetBool("isRunning", false);
+            }
         }
         else
         {
-            if (isAttacking)
+            // Player not in attack range
+            if (playerInSightRange)
             {
-                ResetAttack();
-                animator.ResetTrigger("Attack");
-            }
+                // Chase the player
+                animator.SetBool("isRunning", true);
 
-            if (!isAttacking && playerInSightRange)
-            {
+                if (runningSound != null && !audioSource.isPlaying)
+                {
+                    PlayRunningSound();
+                }
+
                 ChasePlayer(chaseSpeed);
             }
+            else
+            {
+                // Player not in sight range, stand still
+                animator.SetBool("isRunning", false);
+            }
         }
-
-        bool shouldRun = !playerInAttackRange && !isAttacking && !isEnraged && playerInSightRange;
-        animator.SetBool("isRunning", shouldRun);
     }
 
     private IEnumerator EnragedCycle()
@@ -162,9 +190,7 @@ public class EnemyAI : MonoBehaviour
 
             isEnraged = true;
             EnableShield(true);
-
-            // Play enrage sound
-            PlaySound(enrageSound);
+            PlayEnragedSound();
 
             yield return new WaitForSeconds(enragedDuration);
 
@@ -188,21 +214,14 @@ public class EnemyAI : MonoBehaviour
     private void AttackPlayer()
     {
         if (isEnraged) return;
-
         if (!playerInAttackRange) return;
 
-        if (!alreadyAttacked)
-        {
-            isAttacking = true;
-            attackCounter++;
-            animator.SetTrigger("Attack");
+        isAttacking = true;
+        attackCounter++;
+        animator.SetTrigger("Attack");
 
-            // Play attack sound
-            PlaySound(attackSound);
-
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
+        alreadyAttacked = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks);
     }
 
     public void SpawnProjectile()
@@ -226,6 +245,12 @@ public class EnemyAI : MonoBehaviour
 
         GameObject projectileInstance = Instantiate(chosenProjectile, spawnPosition, spawnRotation);
 
+        SpecialProjectile specialComp = projectileInstance.GetComponent<SpecialProjectile>();
+        if (specialComp != null && playerObject != null)
+        {
+            specialComp.AssignPlayer(playerObject);
+        }
+
         Rigidbody rb = projectileInstance.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -237,6 +262,7 @@ public class EnemyAI : MonoBehaviour
     {
         alreadyAttacked = false;
         isAttacking = false;
+        animator.ResetTrigger("Attack");
     }
 
     private void ApplyCollisionDamage()
@@ -245,61 +271,21 @@ public class EnemyAI : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(collisionDamage);
-        }
-    }
+            Debug.Log($"Player took {collisionDamage} damage due to proximity during enraged state.");
 
-    private void ManageWalkingSound()
-    {
-        bool isWalking = animator.GetBool("isRunning") && !isAttacking && !isEnraged;
-
-        if (isWalking && !isWalkingSoundPlaying)
-        {
-            PlaySoundLoop(walkingSound);
-            isWalkingSoundPlaying = true;
-        }
-        else if (!isWalking && isWalkingSoundPlaying)
-        {
-            StopSound();
-            isWalkingSoundPlaying = false;
-        }
-    }
-
-    private void PlaySound(AudioClip clip)
-    {
-        if (clip != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(clip);
-        }
-    }
-
-    private void PlaySoundLoop(AudioClip clip)
-    {
-        if (clip != null && audioSource != null)
-        {
-            audioSource.clip = clip;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-    }
-
-    private void StopSound()
-    {
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-            audioSource.loop = false;
+            // Play the impact sound if assigned
+            if (audioSource != null && impactSound != null)
+            {
+                audioSource.PlayOneShot(impactSound);
+            }
         }
     }
 
     public void TakeDamage(int damage)
     {
-        if (isEnraged)
-        {
-            return;
-        }
+        if (isEnraged) return;
 
         health -= damage;
-
         if (health <= 0)
         {
             if (finishPoint != null)
@@ -307,11 +293,50 @@ public class EnemyAI : MonoBehaviour
                 FinishPoint finishPointScript = finishPoint.GetComponent<FinishPoint>();
                 if (finishPointScript != null)
                 {
+                    // Play death sound before activating the finish point
+                    PlayDeathSound();
                     finishPointScript.ActivateFinishPoint();
                 }
             }
+            else
+            {
+                // If there's no finish point, still play the death sound
+                PlayDeathSound();
+            }
 
             Destroy(gameObject);
+        }
+    }
+
+    public void PlayEnragedSound()
+    {
+        if (audioSource != null && enragedSound != null)
+        {
+            audioSource.PlayOneShot(enragedSound);
+        }
+    }
+
+    public void PlayRunningSound()
+    {
+        if (audioSource != null && runningSound != null)
+        {
+            audioSource.PlayOneShot(runningSound);
+        }
+    }
+
+    public void PlayAttackSound()
+    {
+        if (audioSource != null && attackSound != null)
+        {
+            audioSource.PlayOneShot(attackSound);
+        }
+    }
+
+    public void PlayDeathSound()
+    {
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
         }
     }
 }

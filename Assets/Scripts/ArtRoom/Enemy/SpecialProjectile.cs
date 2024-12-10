@@ -45,24 +45,34 @@ public class SpecialProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the projectile hit the player
-        if (collision.gameObject == player)
+        Debug.Log($"Projectile collided with {collision.gameObject.name}");
+
+        // Check if the projectile hit something tagged as "Player"
+        if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player hit by special projectile!");
 
-            // Deal damage to the player if possible
-            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            // Attempt to find the player's health component
+            PlayerHealth playerHealth = collision.gameObject.GetComponentInParent<PlayerHealth>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
-                Debug.Log($"Special projectile hit {player.name}, dealing {damage} damage.");
+                Debug.Log($"Special projectile hit player, dealing {damage} damage.");
+            }
+            else
+            {
+                Debug.LogWarning("No PlayerHealth component found on the player or its parents.");
             }
 
             // Trigger the splat effect
-            SplatEffect splat = player.GetComponent<SplatEffect>();
+            SplatEffect splat = collision.gameObject.GetComponentInParent<SplatEffect>();
             if (splat != null)
             {
                 splat.ShowSplat();
+            }
+            else
+            {
+                Debug.LogWarning("No SplatEffect component found on the player or its parents.");
             }
         }
 

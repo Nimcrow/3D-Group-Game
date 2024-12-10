@@ -56,6 +56,13 @@ public class SpotlightTrigger : MonoBehaviour
             firstTime = false;
             onTriggerEnter.Invoke();
         }
+
+        if (spotlightMover.spotlightSwitches >= 5)
+        {
+            onTriggerExit.Invoke();
+            spotlightMover.StopMiniGame();
+            SwitchToMainCamera();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,7 +87,7 @@ public class SpotlightTrigger : MonoBehaviour
     {
         booSFX.Pause();
 
-         string animatorControllerName = animationController.animator.runtimeAnimatorController.name;
+        string animatorControllerName = animationController.animator.runtimeAnimatorController.name;
 
         switch (animatorControllerName)
         {

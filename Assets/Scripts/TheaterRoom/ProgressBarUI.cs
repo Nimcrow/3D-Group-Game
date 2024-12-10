@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ProgressBarUI : MonoBehaviour
 {
     public Image barImage;
-    public float fillDuration = 10f;
+    public float fillDuration = 7;
 
     public SpotlightMover spotlightMover;
 

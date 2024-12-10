@@ -18,7 +18,7 @@ public class SpotlightMover : MonoBehaviour
     public bool rightPositionCam = false;
 
     private int lastCameraIndex = -1;
-    private int spotlightSwitches = 0;
+    public int spotlightSwitches = 0;
 
     public RandomAnimationController animationController;
     public GameObject bananaMan;
@@ -28,6 +28,9 @@ public class SpotlightMover : MonoBehaviour
     public bool hasStart = false;
 
     public SpotlightTrigger spotlightTrigger;
+
+    public FinishPoint finishPoint1;
+    public FinishPoint finishPoint2;
 
     void Start()
     {
@@ -51,8 +54,6 @@ public class SpotlightMover : MonoBehaviour
             FlashSpotlight();
 
             spotlightSwitches++;
-            if (spotlightSwitches >= 1)
-                StopMiniGame();
         }
     }
 
@@ -62,11 +63,19 @@ public class SpotlightMover : MonoBehaviour
         SetFixedPositions();
     }
 
-    void StopMiniGame()
+    public void StopMiniGame()
     {
         transform.position = new Vector3(1000f, transform.position.y, 1000f);
         StopCoroutine("FlashEffect");
-        // spawn exit
+
+        // go back to player camera
+        spotlightTrigger.SwitchToMainCamera();
+
+        // turn off booing audio
+        spotlightTrigger.booSFX.Pause();
+
+        finishPoint1.ActivateFinishPoint(); // spawn exit
+        finishPoint2.ActivateFinishPoint(); // spawn exit
     }
 
     void SetFixedPositions()

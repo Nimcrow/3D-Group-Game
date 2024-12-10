@@ -11,6 +11,8 @@ TagManager:
   - Interactable/Pickup
   - Rock
   - Ammo
+  - SpotlightTrigger
+  - Audio
   layers:
   - Default
   - TransparentFX

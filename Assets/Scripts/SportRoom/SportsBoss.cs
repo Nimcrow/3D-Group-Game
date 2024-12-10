@@ -27,6 +27,12 @@ public class SportsBoss : MonoBehaviour
     private float timer; // Game timer
     private Renderer bossRenderer; // Used to change the boss's material
     private int playerHP; // Player's current HP
+    private AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -144,7 +150,8 @@ public class SportsBoss : MonoBehaviour
 
             if (coll.gameObject.CompareTag("Walls") || coll.gameObject.CompareTag("Destructible Walls"))
             {
-                if(coll.gameObject.CompareTag("Destructible Walls"))
+                audioManager.PlaySFX(audioManager.bossStun);
+                if (coll.gameObject.CompareTag("Destructible Walls"))
                 {
                     Destroy(coll.gameObject);
                 }
@@ -164,6 +171,7 @@ public class SportsBoss : MonoBehaviour
             {
                 // Access GameManager and drop the grade
                 GameManager.Instance.DropLetterGrade();
+                audioManager.PlaySFX(audioManager.playerHit);
                 playerHP--;
                 timer = 0f;
                 if (timer >= idleTimer)

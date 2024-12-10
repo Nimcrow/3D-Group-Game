@@ -19,7 +19,22 @@ public class Ammo : MonoBehaviour
 
         // Make the ammo extremely light so it imparts virtually no force
         rb.mass = 0.001f;
+    }
 
+    void Update()
+    {
+        // Debug check: Log velocity to confirm ammo is moving
+        if (rb != null)
+        {
+            if (rb.velocity.magnitude > 0.1f)
+            {
+                // Debug.Log($"Ammo is flying! Velocity: {rb.velocity}");
+            }
+            else
+            {
+                //Debug.Log("Ammo is not moving!");
+            }
+        }
         // Disable gravity so it won't drop and lose momentum
         rb.useGravity = false;
 
@@ -29,6 +44,7 @@ public class Ammo : MonoBehaviour
         // Destroy the ammo after its lifespan
         Destroy(gameObject, lifespan);
     }
+
 
     void OnCollisionEnter(Collision collision)
     {
@@ -44,7 +60,7 @@ public class Ammo : MonoBehaviour
         }
 
         // Destroy the ammo upon collision
-        Debug.Log($"Ammo hit: {collision.gameObject.name}");
+        //Debug.Log($"Ammo hit: {collision.gameObject.name}");
         Destroy(gameObject);
     }
 }

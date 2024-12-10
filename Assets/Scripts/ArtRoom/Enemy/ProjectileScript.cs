@@ -7,7 +7,6 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField] private float initialSpeed = 10f; // Initial speed of the projectile
     [SerializeField] private float slowDownRate = 0f; // Rate at which the projectile slows down per second
     [SerializeField] private int damage = 10; // Damage the projectile deals to the player
-    [SerializeField] private bool isSpecialProjectile = false; // Flag to indicate if this is a special projectile
 
     private Rigidbody rb;
 
@@ -48,17 +47,6 @@ public class ProjectileScript : MonoBehaviour
                 // Apply damage to the player
                 playerHealth.TakeDamage(damage);
                 Debug.Log($"Projectile hit {collision.gameObject.name}, dealing {damage} damage.");
-
-                // Trigger splat effect if this is a special projectile
-                if (isSpecialProjectile)
-                {
-                    SplatEffect splatEffect = collision.gameObject.GetComponent<SplatEffect>();
-                    if (splatEffect != null)
-                    {
-                        splatEffect.ShowSplat();
-                        Debug.Log("Special projectile triggered splat effect!");
-                    }
-                }
             }
         }
 

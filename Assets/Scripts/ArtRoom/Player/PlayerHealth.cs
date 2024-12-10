@@ -10,6 +10,10 @@ public class PlayerHealth : MonoBehaviour
     [Header("Respawn Settings")]
     public RespawnSystem respawnSystem; // Reference to the RespawnSystem
 
+    [Header("Score System")]
+    private string[] grades = { "A", "B", "C", "D", "F" }; // Grade scale
+    private int gradeIndex = 0; // Index for current grade
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -24,6 +28,8 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.LogError("No RespawnSystem found! Assign one in the Inspector.");
         }
+
+        Debug.Log($"PlayerHealth initialized. Starting grade: {grades[gradeIndex]}");
     }
 
     public void TakeDamage(int damage)
@@ -48,6 +54,16 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player died!");
+
+        // Update the player's grade
+        UpdateGrade();
+
+        // Notify the GradeDisplay to refresh the UI
+        GradeDisplay gradeDisplay = FindObjectOfType<GradeDisplay>();
+        if (gradeDisplay != null)
+        {
+            gradeDisplay.RefreshGrade();
+        }
 
         // Respawn player and reset health
         if (respawnSystem != null)
@@ -76,6 +92,20 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    // Update the player's grade
+    private void UpdateGrade()
+    {
+        if (gradeIndex < grades.Length - 1)
+        {
+            gradeIndex++;
+            Debug.Log($"Grade decreased! New grade: {grades[gradeIndex]}");
+        }
+        else
+        {
+            Debug.Log("Player has already reached the lowest grade (F).");
+        }
+    }
+
     // Invincibility logic
     public void StartInvincibility(float duration)
     {
@@ -93,5 +123,10 @@ public class PlayerHealth : MonoBehaviour
 
         isInvincible = false;
         Debug.Log("Player is no longer invincible!");
+    }
+
+    public string GetCurrentGrade()
+    {
+        return grades[gradeIndex];
     }
 }

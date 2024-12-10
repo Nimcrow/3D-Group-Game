@@ -13,12 +13,12 @@ public class Ammo : MonoBehaviour
         if (rb == null)
         {
             Debug.LogError("No Rigidbody found on ammo prefab!");
-            Destroy(gameObject); // Destroy ammo if Rigidbody is missing
+            Destroy(gameObject);
             return;
         }
 
-        Destroy(gameObject, lifespan); // Destroy the ammo after its lifespan
-    }
+        // Make the ammo extremely light so it imparts virtually no force
+        rb.mass = 0.001f;
 
     void Update()
     {
@@ -34,17 +34,26 @@ public class Ammo : MonoBehaviour
                 //Debug.Log("Ammo is not moving!");
             }
         }
+        // Disable gravity so it won't drop and lose momentum
+        rb.useGravity = false;
+
+        // Set collision detection to continuous to prevent passing through objects
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+        // Destroy the ammo after its lifespan
+        Destroy(gameObject, lifespan);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Handle collision with the enemy
-        if (collision.gameObject.CompareTag("Enemy")) // Ensure the enemy has the "Enemy" tag
+        // Check if we hit an enemy
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
             if (enemyAI != null)
             {
-                enemyAI.TakeDamage(damage); // Trigger the enemy's damage logic
+                // Apply damage to the enemy
+                enemyAI.TakeDamage(damage);
             }
         }
 

@@ -205,16 +205,16 @@ public class FirstPersonController : MonoBehaviour
         // Calculate Speed
         float speed = characterController.velocity.magnitude;
         //print("Speed Is: " + speed);
-        playerAnimation.SetFloat("Speed", speed);
+        //playerAnimation.SetFloat("Speed", speed);
 
         // Update Grounded Status
-        playerAnimation.SetBool("IsGrounded", characterController.isGrounded);
+        //playerAnimation.SetBool("IsGrounded", characterController.isGrounded);
 
         // Update Crouching Status
-        playerAnimation.SetBool("IsCrouching", isCrouching);
+        //playerAnimation.SetBool("IsCrouching", isCrouching);
 
         // Vertical Velocity for Jump/Fall
-        playerAnimation.SetFloat("VerticalVelocity", characterController.velocity.y);
+        //playerAnimation.SetFloat("VerticalVelocity", characterController.velocity.y);
     }
 
     // This function will map the keyboard keys to the actual movement functions that we need to link them to

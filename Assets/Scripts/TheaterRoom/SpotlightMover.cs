@@ -20,10 +20,12 @@ public class SpotlightMover : MonoBehaviour
     private int lastCameraIndex = -1;
     public int spotlightSwitches = 0;
 
-    public RandomAnimationController animationController;
-    public GameObject bananaMan;
+    public RandomAnimationController leadAnimationController;
+    public GameObject leadModel;
     public ProgressBarUI progressBar;
     public MapDanceMove danceOptions;
+
+    public GameObject playerModel;
 
     public bool hasStart = false;
 
@@ -46,16 +48,28 @@ public class SpotlightMover : MonoBehaviour
         2. when player does wrong dance move
         3. when player is does right dance move
         */
-        if (progressBar.barImage.fillAmount == 0) // start next spotlight, end current one
+        if (progressBar.barImage.fillAmount == 0) // start next spotlight
         {
-            animationController.RotateBananaMan(bananaMan);
-            animationController.RandomDanceMove();
+            RotateLeadModel(leadModel); // rotate leadModel
+            AdjustPlayerModelTransform(playerModel); // rotate playerModel
+            leadAnimationController.RandomDanceMove();
             danceOptions.ResetMaterial(); // change all options to green
             FlashSpotlight();
 
             spotlightSwitches++;
         }
     }
+
+    void RotateLeadModel(GameObject model)
+    {
+        model.transform.localEulerAngles = new Vector3(0, 90, -90); // x y z rotation to face audience
+    }
+
+    void AdjustPlayerModelTransform(GameObject model)
+    {
+        model.transform.localEulerAngles = new Vector3(0, 0, 0); // x y z rotation to face audience
+    }
+
 
     public void StartMiniGame()
     {

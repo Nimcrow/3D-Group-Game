@@ -1047,7 +1047,7 @@ MonoBehaviour:
   playerModel: {fileID: 853469740}
   incorrectMaterial: {fileID: 2100000, guid: 50c3f7f7ad968564194a9ad0d9e824ba, type: 2}
   correctMaterial: {fileID: 2100000, guid: dc6917a88f1a4084ab66b2a9a5dcba1f, type: 2}
-  mainBananaModel: {fileID: 415073652}
+  leadModel: {fileID: 415073652}
   spotlightMover: {fileID: 2019712005}
   gradeController: {fileID: 1611085208}
 --- !u!4 &323544445
@@ -1058,12 +1058,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323544443}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -17.276684, y: -2.1152892, z: 0.8968425}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -38.24264, y: 1.1831576, z: -2.1152897}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2019712003}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387472609
 GameObject:
@@ -4403,7 +4403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1326766195}
   m_Layer: 0
-  m_Name: mini dancing banana men
+  m_Name: dancing options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5433,7 +5433,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0453a9a157a6d7a4dbb4869a9009d3e9, type: 3}
   applauseSFX: {fileID: 2123589713}
   booSFX: {fileID: 822045350}
-  animationController: {fileID: 415073657}
+  leadModelAnimationController: {fileID: 415073657}
   isPlayerInSpotlight: 0
 --- !u!82 &1550259471
 AudioSource:
@@ -8000,7 +8000,7 @@ GameObject:
   - component: {fileID: 2019712005}
   - component: {fileID: 2019712006}
   m_Layer: 0
-  m_Name: spotlight
+  m_Name: spotlight-performance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8019,12 +8019,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 323544445}
-  - {fileID: 182536842}
+  - {fileID: 1550259468}
   - {fileID: 415073654}
   - {fileID: 1326766195}
+  - {fileID: 182536842}
   - {fileID: 36521170}
-  - {fileID: 1550259468}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 90}
 --- !u!108 &2019712004
@@ -8107,10 +8106,11 @@ MonoBehaviour:
   middlePositionCam: 1
   rightPositionCam: 0
   spotlightSwitches: 0
-  animationController: {fileID: 415073657}
-  bananaMan: {fileID: 415073652}
+  leadAnimationController: {fileID: 415073657}
+  leadModel: {fileID: 415073652}
   progressBar: {fileID: 752745559}
   danceOptions: {fileID: 323544444}
+  playerModel: {fileID: 853469740}
   hasStart: 0
   spotlightTrigger: {fileID: 1550259470}
   finishPoint1: {fileID: 1412420580}
@@ -8207,7 +8207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 81bb9eea30387e442899949a80011e55, type: 3}
       propertyPath: m_Name
-      value: dancing banana man - MODEL
+      value: lead model
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 81bb9eea30387e442899949a80011e55, type: 3}
       propertyPath: m_Controller
@@ -8550,6 +8550,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 617029848}
   - {fileID: 98863945}
   - {fileID: 1187215444}
   - {fileID: 620031576}
@@ -8557,6 +8558,6 @@ SceneRoots:
   - {fileID: 1588312673}
   - {fileID: 1031199089}
   - {fileID: 2019712003}
-  - {fileID: 617029848}
   - {fileID: 1127271277}
   - {fileID: 1611085207}
+  - {fileID: 323544445}

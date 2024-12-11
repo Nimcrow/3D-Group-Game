@@ -2,16 +2,15 @@ using UnityEngine;
 
 public class MapDanceMove : MonoBehaviour
 {
-    public GameObject[] mappedObjects = new GameObject[6];  // Array of banana men
-    public GameObject playerModel;  // Reference to the player model
+    public GameObject[] mappedObjects = new GameObject[6];  // dance choices
 
-    public Material incorrectMaterial;
-    public Material correctMaterial;
+    public GameObject playerModel;  // player model
+    private RuntimeAnimatorController defaultPlayerAnimatorController; // store the default AnimatorController for the player
 
-    // store the default AnimatorController for the player
-    private RuntimeAnimatorController defaultPlayerAnimatorController;
+    public Material incorrectMaterial; // red for chosen
+    public Material correctMaterial; // for resetting after spotlight switch
 
-    public GameObject mainBananaModel;  // expectedModel
+    public GameObject leadModel;  // lead model to follow
     private RuntimeAnimatorController expectedDanceController;
 
     public SpotlightMover spotlightMover;
@@ -23,10 +22,7 @@ public class MapDanceMove : MonoBehaviour
 
     void Start()
     {
-        Animator expectedAnimator = mainBananaModel.GetComponent<Animator>();
-        expectedDanceController = expectedAnimator.runtimeAnimatorController;
-
-        // Store the default PlayerAnimatorController at the start
+        // Store the default player animation at the start
         Animator playerAnimator = playerModel.GetComponent<Animator>();
         if (playerAnimator != null)
             defaultPlayerAnimatorController = playerAnimator.runtimeAnimatorController;
@@ -88,18 +84,18 @@ public class MapDanceMove : MonoBehaviour
     {
         if (objectIndex < 0 || objectIndex >= mappedObjects.Length) return; // Ensure the index is within range
 
-        // get the Animator component from the selected banana man
-        Animator bananaManAnimator = mappedObjects[objectIndex].GetComponent<Animator>();
-        Animator expectedAnimator = mainBananaModel.GetComponent<Animator>();
+        // get the Animator component from the selected dance option
+        Animator selectedDanceAnimator = mappedObjects[objectIndex].GetComponent<Animator>();
+        Animator expectedAnimator = leadModel.GetComponent<Animator>(); // for grading
+        Animator playerAnimator = playerModel.GetComponent<Animator>();
 
         // display chosen animation/dance
-        if (bananaManAnimator != null)
+        if (selectedDanceAnimator != null)
         {
-            Animator playerAnimator = playerModel.GetComponent<Animator>();
-            playerAnimator.applyRootMotion = false;
+            playerAnimator.applyRootMotion = false; // to stop the player from moving
 
             if (playerAnimator != null)
-                playerAnimator.runtimeAnimatorController = bananaManAnimator.runtimeAnimatorController;
+                playerAnimator.runtimeAnimatorController = selectedDanceAnimator.runtimeAnimatorController; // change animation
 
             if (playerAnimator.runtimeAnimatorController.name == "anim.headspin")
                 playerAnimator.applyRootMotion = true;
@@ -108,10 +104,10 @@ public class MapDanceMove : MonoBehaviour
         }
 
         // check if chosen dance matches expected dance
-        if (expectedAnimator.runtimeAnimatorController.name != bananaManAnimator.runtimeAnimatorController.name)
+        if (expectedAnimator.runtimeAnimatorController.name != playerAnimator.runtimeAnimatorController.name)
         {
             UpdateGrade(); // bad
-            gradeController.RefreshGrade();
+            gradeController.RefreshGrade(); // reflect grade in UI
         }
     }
 
@@ -133,7 +129,7 @@ public class MapDanceMove : MonoBehaviour
         return grades[gradeIndex];
     }
 
-    // reset the player's animation to its default controller
+    // reset the player's animation to its default controller (after exiting the spotlight)
     public void ResetPlayerAnimation()
     {
         Animator playerAnimator = playerModel.GetComponent<Animator>();

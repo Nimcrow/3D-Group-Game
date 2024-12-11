@@ -7,14 +7,10 @@ public class RandomAnimationController : MonoBehaviour
 
     public SpotlightMover spotlightMover;
 
+    // set the dance animation for the leadModel
     void Start()
     {
         RandomDanceMove();
-    }
-
-    public void RotateBananaMan(GameObject bananaMan)
-    {
-        bananaMan.transform.localEulerAngles = new Vector3(0, 90, -90); // x y z rotation to face audience
     }
 
     public void RandomDanceMove()

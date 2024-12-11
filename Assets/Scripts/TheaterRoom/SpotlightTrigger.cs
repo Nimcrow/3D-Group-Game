@@ -29,7 +29,7 @@ public class SpotlightTrigger : MonoBehaviour
     public AudioSource applauseSFX;
     public AudioSource booSFX;
 
-    public RandomAnimationController animationController;
+    public RandomAnimationController leadModelAnimationController;
 
     public bool isPlayerInSpotlight = false;
     private bool firstTime = true;
@@ -38,7 +38,7 @@ public class SpotlightTrigger : MonoBehaviour
     {
         audioSourceMusic = GetComponent<AudioSource>();
 
-        mainCamera.enabled = true; // ensure only the main camera is enabled at the start
+        mainCamera.enabled = true; // ensure only the player camera is enabled at the start
         danceCamera.enabled = false;
         audienceCamera_left.enabled = false;
         audienceCamera_middle.enabled = false;
@@ -87,7 +87,7 @@ public class SpotlightTrigger : MonoBehaviour
     {
         booSFX.Pause();
 
-        string animatorControllerName = animationController.animator.runtimeAnimatorController.name;
+        string animatorControllerName = leadModelAnimationController.animator.runtimeAnimatorController.name; // play music according to leadModel dance
 
         switch (animatorControllerName)
         {
@@ -127,7 +127,7 @@ public class SpotlightTrigger : MonoBehaviour
         booSFX.Play();
     }
 
-    public void SwitchToMainCamera()
+    public void SwitchToMainCamera() // back to main player
     {
         mainCamera.enabled = true;
         danceCamera.enabled = false;
@@ -136,7 +136,7 @@ public class SpotlightTrigger : MonoBehaviour
         audienceCamera_right.enabled = false;
     }
 
-    public void SwitchToDanceCamera()
+    public void SwitchToDanceCamera() // wide shot
     {
         mainCamera.enabled = false;
         danceCamera.enabled = true;
@@ -145,7 +145,7 @@ public class SpotlightTrigger : MonoBehaviour
         audienceCamera_right.enabled = false;
     }
 
-    public void SwitchToAudienceCamera()
+    public void SwitchToAudienceCamera() // handle which audience camera
     {
         if (spotlightMover.leftPositionCam)
             SwitchToLeftCamera();

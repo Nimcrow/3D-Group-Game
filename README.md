@@ -1,7 +1,8 @@
 # Name of Game: 
 - Undeclared Adventures
 
-- [Download Demo Video](3DGroupProject_Draft1%202024-12-10%2018-36-56.mp4)
+# Demo:
+- [Watch The Playthrough Here!](https://vimeo.com/1038163637?share=copy)
 
 # Name of Group Members: 
 - Abraham Al-Shamsie 

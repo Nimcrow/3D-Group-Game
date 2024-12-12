@@ -2731,7 +2731,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 94040fb8c36cf88469699bad11c37f66, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3065,7 +3065,7 @@ GameObject:
   - component: {fileID: 913945235}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Finish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3420,7 +3420,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950679429}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.076146506, y: 0.31539398, z: -0.025398869, w: 0.9455598}
+  m_LocalRotation: {x: 0.013316806, y: 0.6434319, z: -0.011196125, w: 0.76530564}
   m_LocalPosition: {x: -12.26, y: 2.54, z: -6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4085,7 +4085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8994621995709668326, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -20.06
+      value: 11.33
       objectReference: {fileID: 0}
     - target: {fileID: 8994621995709668326, guid: 7a8ec5a793454a24688cdf789baf0a91, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4558,7 +4558,7 @@ GameObject:
   - component: {fileID: 1412420580}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Finish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5831,7 +5831,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 656099a248e11224c82f717539310179, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6097,7 +6097,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555897548}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.076146506, y: 0.31539404, z: -0.025398877, w: 0.94555974}
+  m_LocalRotation: {x: 0.013316806, y: 0.64343196, z: -0.011196126, w: 0.76530564}
   m_LocalPosition: {x: -12.26, y: 2.54, z: -6.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8363,7 +8363,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fd9f29ac23998ae49a629b623cd26441, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0

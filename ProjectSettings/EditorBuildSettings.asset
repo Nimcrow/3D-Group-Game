@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 303b9a5965ae5864abed5cf6e1fcbbd2
+  - enabled: 1
     path: Assets/Scenes/HubRoom.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
@@ -13,14 +16,11 @@ EditorBuildSettings:
     guid: 6274ecc7e0e732b40a5260335370653b
   - enabled: 1
     path: Assets/Scenes/TheaterRoom.unity
-    guid: 22e1a4c1a22ad75419ed901d3c88fa75
+    guid: eb21601084b3f8e4c9e8480310113733
   - enabled: 1
     path: Assets/Scenes/ArtRoom.unity
     guid: d47c3131c3bf1e6458056c6ae551b43e
   - enabled: 1
     path: Assets/Scenes/GeologyRoom.unity
     guid: 10122cf628f2c884da1f5e8c70bd46e9
-  - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: 303b9a5965ae5864abed5cf6e1fcbbd2
   m_configObjects: {}

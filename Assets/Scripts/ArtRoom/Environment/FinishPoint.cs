@@ -36,6 +36,6 @@ public class FinishPoint : MonoBehaviour
 
     private void LoadHubRoom()
     {
-        SceneManager.LoadScene(0); // Always load HubRoom, assuming it's at index 0
+        SceneManager.LoadScene(1); // Always load HubRoom, assuming it's at index 0
     }
 }
